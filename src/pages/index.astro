@@ -25,6 +25,11 @@ const ofertas = [
     t: 'Liderazgo a tiempo parcial',
     d: 'Rol de Chief Data o Chief AI Officer fraccional para empresas que todavía no necesitan uno full time: hoja de ruta, armado del equipo y ejecución.',
   },
+  {
+    k: 'Mentoría',
+    t: 'Para líderes de datos e IA',
+    d: 'Acompañamiento uno a uno para quienes lideran o quieren liderar equipos de datos e IA: decisiones difíciles, armado de equipo, carrera y cómo ganar lugar en la mesa del negocio.',
+  },
 ];
 
 const roles = [
@@ -58,6 +63,12 @@ const charlas = [
 const videos = [
   { id: 'AR7m4KI5Wtk', t: 'El futuro de Data & Analytics en la bancarización', ev: 'CDO LATAM Summit 2022', dur: '40:46' },
   { id: 'YDKR0YHoZ3o', t: 'Charla abierta sobre inteligencia artificial: experiencias de un camino sinuoso', ev: 'FAMAF 2022', dur: '1:21:16' },
+  { id: 'kzJBF75StH4', t: 'Data & AI en la práctica', ev: 'Seminarium · Summit Data & AI 2022', dur: '24:03' },
+  { id: '_8K8Gpf47k8', t: 'Data driven decision making', ev: 'Coderhouse · TalentWeek', dur: '30:43' },
+  { id: 'yX7hHV_jxQ0', t: '¿Cómo la IA está transformando el mundo y las organizaciones?', ev: 'Tactical Edge', dur: '1:07:10' },
+  { id: 'RKozBg6ZbHI', t: 'De la transformación digital a la analítica: casos de éxito en organizaciones LatAm', ev: 'Charla', dur: '1:06:11' },
+  { id: 'm0yJEibue2Y', t: 'Manos a la obra: hacemos Data Science', ev: 'Taller en vivo · 2020', dur: '1:20:41' },
+  { id: 'RlAa2ULCWtM', t: 'Estudiar Data Science: qué hace falta para arrancar', ev: 'Henry', dur: '1:13:36' },
 ];
 
 // Entrevistas y podcasts en canales de terceros (no están en el canal propio).
@@ -77,17 +88,54 @@ const podcasts = [
   { show: 'Inteligencia Colectiva', t: '¿Cómo entender a sus clientes mediante datos?', y: '2022', href: 'https://open.spotify.com/episode/46VmpQVbR42fsqx1BqnTrc' },
 ];
 
+const stats = [
+  { n: '15+', t: 'años liderando datos e IA' },
+  { n: '36.000+', t: 'seguidores en LinkedIn' },
+  { n: '10', t: 'entrevistas y podcasts' },
+  { n: '2012', t: 'desde que doy clases' },
+];
+
+const escenarios = ['CDO LATAM Summit', 'Congreso CDO LATAM · Bogotá', 'CMS Fin & Pay Latam Forum', 'AIFI-25', 'Seminarium Summit Data & AI', 'FAMAF', 'Coderhouse TalentWeek', 'Growth Rockstar', 'IA sin Humo', 'teramot', 'TalentCross'];
+
+const recomendaciones = [
+  {
+    q: 'No llegó a optimizar un área de datos, llegó a crear una que hoy es referencia. Bajo su liderazgo pusimos en producción un scoring crediticio alternativo, un chatbot de atención al cliente y modelos de lifetime value que predicen desde el día 1 de vida del usuario.',
+    n: 'Nicolás Dagosta',
+    r: 'Head of Data & AI en Ualá · le reportó durante cinco años',
+  },
+  {
+    q: 'Construyó un equipo increíble, tanto en lo humano como en lo profesional, y tuvo un rol central en transformar la manera en que toda Ualá consume y utiliza datos para tomar decisiones.',
+    n: 'Gabriel Miadosqui',
+    r: 'Data & AI Advisor · le reportó en Ualá',
+  },
+  {
+    q: 'Puedo hablar de la capacidad de Pablo para entender el negocio y ofrecer soluciones con impacto significativo.',
+    n: 'Susana Bergero',
+    r: 'Directora en Naranja X · fue su líder directa',
+  },
+];
+const recsUrl = 'https://www.linkedin.com/in/pablo-a-guzzi/details/recommendations/';
+
+const temas = [
+  { t: 'De área reactiva a motor de negocio', d: 'Cómo pasar de un equipo de datos que responde pedidos a uno que mueve los números de la compañía.' },
+  { t: 'IA agéntica en la empresa, sin humo', d: 'Qué hace falta para que los agentes funcionen dentro de una organización: contexto, memoria, identidad, seguridad.' },
+  { t: 'Menos pilotos, más IA en producción', d: 'Por qué la mayoría de los proyectos de IA no pasan de la prueba y qué cambia cuando entran en la operación.' },
+  { t: 'Construir datos e IA en una fintech que escala', d: 'Lo que aprendimos en Ualá armando el área desde cero en varios países.' },
+];
+
+const post = (id: string) => `https://www.linkedin.com/feed/update/urn:li:activity:${id}/`;
+
 const serie = [
-  'Context engineering',
-  'Memoria de agentes',
-  'Grounding organizacional',
-  'Interoperabilidad de agentes',
-  'Escalado agéntico',
-  'Identidad de agentes',
-  'Observabilidad y evaluación',
-  'Seguridad agéntica',
-  'Orquestación multi-agente',
-  'Capa semántica',
+  { t: 'Context engineering', id: '7508156961956245506' },
+  { t: 'Memoria de agentes', id: '7508880534291435520' },
+  { t: 'Grounding organizacional', id: '7510331234649182208' },
+  { t: 'Interoperabilidad de agentes', id: '7511055118763753472' },
+  { t: 'Escalado agéntico', id: '7513229156122349568' },
+  { t: 'Identidad de agentes', id: '7513953966980780033' },
+  { t: 'Observabilidad y evaluación' },
+  { t: 'Seguridad agéntica' },
+  { t: 'Orquestación multi-agente' },
+  { t: 'Capa semántica' },
 ];
 
 const schema = {
@@ -109,8 +157,8 @@ const schema = {
         <ul class="nav__links">
           <li><a href="#como-ayudo">Cómo puedo ayudar</a></li>
           <li><a href="#trayectoria">Trayectoria</a></li>
+          <li><a href="#recomendaciones">Recomendaciones</a></li>
           <li><a href="#charlas">Charlas</a></li>
-          <li><a href="#docencia">Docencia</a></li>
           <li><a href="#entrevistas">Entrevistas</a></li>
         </ul>
       </nav>
@@ -152,8 +200,24 @@ const schema = {
               <li>Advisory</li>
               <li>Consultoría</li>
               <li>Fractional CDO / CAIO</li>
+              <li>Mentoría</li>
             </ul>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NÚMEROS Y ESCENARIOS -->
+    <section class="proof" aria-label="Trayectoria en números">
+      <div class="wrap">
+        <ul class="stats">
+          {stats.map((s) => (
+            <li><span class="stats__n">{s.n}</span><span class="stats__t">{s.t}</span></li>
+          ))}
+        </ul>
+        <div class="stages">
+          <p class="stages__label">Estuve en</p>
+          <ul class="stages__list">{escenarios.map((e) => <li>{e}</li>)}</ul>
         </div>
       </div>
     </section>
@@ -164,14 +228,14 @@ const schema = {
         <div class="split">
           <div>
             <p class="eyebrow">Cómo puedo ayudar</p>
-            <h2 id="ayudo-t">Tres formas de trabajar <span class="hl">juntos.</span></h2>
+            <h2 id="ayudo-t">Cuatro formas de trabajar <span class="hl">juntos.</span></h2>
           </div>
           <p class="intro">
-            Según lo que necesite tu empresa: una mirada experta para decidir, un equipo que construya, o
-            alguien que lidere datos e IA desde adentro.
+            Según lo que necesites: una mirada experta para decidir, un equipo que construya, alguien que
+            lidere datos e IA desde adentro, o un mentor para tu propio camino como líder.
           </p>
         </div>
-        <div class="cards cards--3">
+        <div class="cards cards--4">
           {ofertas.map((o) => (
             <article class="card card--bar">
               <p class="kicker">{o.k}</p>
@@ -217,6 +281,31 @@ const schema = {
             </li>
           ))}
         </ol>
+      </div>
+    </section>
+
+    <!-- RECOMENDACIONES -->
+    <section class="section section--panel" id="recomendaciones" aria-labelledby="recs-t">
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Recomendaciones</p>
+            <h2 id="recs-t">Lo que dicen quienes <span class="hl">trabajaron conmigo.</span></h2>
+          </div>
+          <p class="intro">
+            Fragmentos de recomendaciones públicas en LinkedIn de personas de mis equipos y de quienes me
+            lideraron.
+          </p>
+        </div>
+        <div class="cards cards--3">
+          {recomendaciones.map((r) => (
+            <figure class="card quote">
+              <blockquote><p>“{r.q}”</p></blockquote>
+              <figcaption><strong>{r.n}</strong><span>{r.r}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+        <a class="more more--block" href={recsUrl} target="_blank" rel="noopener" data-cta="home-recs">Ver las 15 recomendaciones en LinkedIn <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
@@ -267,6 +356,23 @@ const schema = {
               </li>
             ))}
           </ul>
+        </div>
+
+        <div class="talks">
+          <h3 class="subhead">Temas de charla</h3>
+          <div class="cards cards--2">
+            {temas.map((t, i) => (
+              <article class="card card--bar">
+                <p class="kicker">{String(i + 1).padStart(2, '0')}</p>
+                <h3>{t.t}</h3>
+                <p>{t.d}</p>
+              </article>
+            ))}
+          </div>
+          <div class="actions actions--gap">
+            <a class="btn btn--glow" href={contactHref} {...ext} data-cta="home-speaking">Invitame a tu evento</a>
+            <a class="btn btn--ghost" href="/prensa">Kit para organizadores</a>
+          </div>
         </div>
       </div>
     </section>
@@ -365,7 +471,14 @@ const schema = {
         </div>
         <ol class="series" aria-label="Conceptos de la serie">
           {serie.map((s, i) => (
-            <li><span class="series__n">{String(i + 1).padStart(2, '0')}</span>{s}</li>
+            <li class={s.id ? 'is-live' : 'is-soon'}>
+              <span class="series__n">{String(i + 1).padStart(2, '0')}</span>
+              {s.id ? (
+                <a href={post(s.id)} target="_blank" rel="noopener">{s.t}&nbsp;<span aria-hidden="true">↗</span></a>
+              ) : (
+                <span>{s.t} <span class="soon">pronto</span></span>
+              )}
+            </li>
           ))}
         </ol>
       </div>
@@ -399,7 +512,7 @@ const schema = {
     <div class="wrap foot__in">
       <p><span class="mark mark--sm">pablo guzzi</span></p>
       <p>
-        {SITE.city}
+        {SITE.city} · <a href="/prensa">Prensa y organizadores</a>
         {SITE.linkedinUrl && <> · <a href={SITE.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a></>}
         {SITE.youtubeUrl && <> · <a href={SITE.youtubeUrl} target="_blank" rel="noopener">YouTube</a></>}
         · © {new Date().getFullYear()}

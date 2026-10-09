@@ -1,0 +1,141 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+
+const title = 'Pablo Guzzi · Prensa y organizadores';
+const description = 'Bio, fotos y temas de charla de Pablo Guzzi, ex Chief Data & AI Officer en Ualá, para organizadores de eventos y prensa.';
+
+const contactHref = SITE.formUrl || '/#contacto';
+
+const bios = [
+  {
+    k: 'Bio corta',
+    t: 'Pablo Guzzi fue Chief Data & AI Officer en Ualá (2021–2026). Lleva más de 15 años liderando datos e inteligencia artificial en América Latina y hoy ayuda a empresas a llevar la IA a la operación como advisor, consultor y líder fraccional.',
+  },
+  {
+    k: 'Bio media',
+    t: 'Pablo Guzzi fue Chief Data & AI Officer en Ualá entre 2021 y 2026 y, antes, Chief Data & Analytics Officer en Naranja X. Lleva más de 15 años liderando equipos de datos e IA en fintech, energía, retail y telecomunicaciones, con pasos por YPF, Garbarino, Banco Comafi, DirecTV LatAm, Red Link e INDEC.\n\nEs director de la carrera de Data Science & Analytics en Coderhouse y profesor invitado en programas ejecutivos de UdeSA, Austral y Di Tella. Hoy asesora a empresas para llevar la IA a la operación.',
+  },
+  {
+    k: 'Bio larga',
+    t: 'Pablo Guzzi es especialista en datos e inteligencia artificial aplicada a negocios. Fue Chief Data & AI Officer en Ualá entre 2021 y 2026, donde construyó el área de datos e IA de la compañía, y antes fue Chief Data & Analytics Officer en Naranja X. A lo largo de más de 15 años lideró equipos de datos en YPF, Garbarino, Banco Comafi, DirecTV LatAm, Red Link e INDEC.\n\nDa clases desde 2012: fue profesor de Data Mining y Muestreo en la UNTREF, es director de la carrera de Data Science & Analytics en Coderhouse y profesor invitado en programas ejecutivos de UdeSA, Austral y Di Tella. Es Licenciado en Estadística (UNTREF), Magíster en Data Mining y Knowledge Discovery (UBA) y MBA (Universidad Torcuato Di Tella).\n\nHabla con frecuencia en congresos de la industria como CDO LATAM y CMS Fin & Pay Latam Forum, y escribe en LinkedIn sobre IA agéntica aplicada a empresas para una comunidad de más de 36.000 seguidores. Hoy trabaja como advisor, consultor, mentor y líder fraccional de datos e IA.',
+  },
+];
+
+const temas = [
+  'De área reactiva a motor de negocio',
+  'IA agéntica en la empresa, sin humo',
+  'Menos pilotos, más IA en producción',
+  'Construir datos e IA en una fintech que escala',
+];
+---
+<Base title={title} description={description}>
+  <header class="nav">
+    <div class="wrap nav__in">
+      <a class="mark" href="/" aria-label="Pablo Guzzi, inicio">pablo guzzi</a>
+      <nav aria-label="Secciones">
+        <ul class="nav__links">
+          <li><a href="#bio">Bio</a></li>
+          <li><a href="#fotos">Fotos</a></li>
+          <li><a href="#temas">Temas</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--sm" href={contactHref} target="_blank" rel="noopener" data-cta="prensa-nav">Invitame</a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero grid-bg" id="top">
+      <div class="glow glow--hero" aria-hidden="true"></div>
+      <div class="wrap">
+        <p class="eyebrow">Prensa y organizadores</p>
+        <h1 class="h1--name">Kit de <span class="hl">speaker.</span></h1>
+        <p class="lede">
+          Todo lo que necesitás para presentarme en tu evento, medio o podcast: bios en tres largos, fotos en
+          alta y temas de charla. Usalos libremente.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="bio" aria-labelledby="bio-t">
+      <div class="wrap">
+        <p class="eyebrow">Bio</p>
+        <h2 id="bio-t">Elegí el largo que <span class="hl">necesites.</span></h2>
+        <div class="cards">
+          {bios.map((b, i) => (
+            <div class="bio">
+              <div class="bio__head">
+                <p class="kicker">{b.k}</p>
+                <button class="copy" type="button" data-copy={`bio-${i}`}>Copiar</button>
+              </div>
+              <p class="bio__text" id={`bio-${i}`}>{b.t}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--panel" id="fotos" aria-labelledby="fotos-t">
+      <div class="wrap">
+        <p class="eyebrow">Fotos</p>
+        <h2 id="fotos-t">Fotos para <span class="hl">descargar.</span></h2>
+        <div class="photos">
+          <a href="/pablo-full.jpg" download="pablo-guzzi-retrato.jpg">
+            <img src="/pablo-full.jpg" alt="Pablo Guzzi, retrato vertical en blanco y negro" />
+            Retrato vertical · descargar
+          </a>
+          <a href="/pablo.jpg" download="pablo-guzzi-cuadrada.jpg">
+            <img src="/pablo.jpg" alt="Pablo Guzzi, retrato cuadrado en blanco y negro" />
+            Retrato cuadrado · descargar
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="temas" aria-labelledby="temas-t">
+      <div class="wrap">
+        <p class="eyebrow">Temas de charla</p>
+        <h2 id="temas-t">De qué puedo <span class="hl">hablar.</span></h2>
+        <ol class="rows">
+          {temas.map((t, i) => (
+            <li class="row">
+              <span class="row__y">{String(i + 1).padStart(2, '0')}</span>
+              <span class="row__org">{t}</span>
+              <span class="row__t">Keynote, panel o taller</span>
+            </li>
+          ))}
+        </ol>
+        <p class="note">También armo charlas a medida para equipos internos y programas ejecutivos. Las charlas completas están en <a href="/#charlas">la página principal</a> y en mi <a href={SITE.youtubeUrl} target="_blank" rel="noopener">canal de YouTube</a>.</p>
+      </div>
+    </section>
+
+    <section class="final grid-bg" id="contacto" aria-labelledby="final-t">
+      <div class="glow glow--final" aria-hidden="true"></div>
+      <div class="wrap final__in">
+        <p class="eyebrow">Contacto</p>
+        <h2 id="final-t">Contame de tu <span class="hl">evento.</span></h2>
+        <p>Fecha, audiencia y formato. Te respondo personalmente.</p>
+        <div class="actions actions--center">
+          <a class="btn btn--glow" href={contactHref} target="_blank" rel="noopener" data-cta="prensa-final">Invitame a tu evento</a>
+          <a class="btn btn--ghost" href={SITE.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <p><span class="mark mark--sm">pablo guzzi</span></p>
+      <p><a href="/">Inicio</a> · {SITE.city} · © {new Date().getFullYear()}</p>
+    </div>
+  </footer>
+
+  <script is:inline>
+    document.querySelectorAll('[data-copy]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = document.getElementById(b.getAttribute('data-copy')).innerText;
+        navigator.clipboard.writeText(t).then(function () { b.textContent = 'Copiado'; setTimeout(function () { b.textContent = 'Copiar'; }, 1600); });
+      });
+    });
+  </script>
+</Base>
