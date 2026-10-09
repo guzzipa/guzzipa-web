@@ -18,8 +18,7 @@ const ofertas = [
   {
     k: 'Consultoría',
     t: 'IA en la operación',
-    d: 'Proyectos concretos para automatizar procesos y llevar casos de uso a producción, a través de Guzzi AI.',
-    link: { href: '/ai-implementation', label: 'Conocer Guzzi AI' },
+    d: 'Proyectos concretos para automatizar procesos y llevar casos de uso de IA a producción, con un equipo que diseña y construye.',
   },
   {
     k: 'Fractional',
@@ -61,6 +60,23 @@ const videos = [
   { id: 'YDKR0YHoZ3o', t: 'Charla abierta sobre inteligencia artificial: experiencias de un camino sinuoso', ev: 'FAMAF 2022', dur: '1:21:16' },
 ];
 
+// Entrevistas y podcasts en canales de terceros (no están en el canal propio).
+const entrevistas = [
+  { id: 'CgukQCGz6nc', t: 'De área reactiva a motor de negocio: cómo escalar Data', ev: 'TalentTalks #3 · TalentCross · 2026', dur: '24:14' },
+  { id: 'uhOK-lW65iA', t: 'Líder en IA: cómo adoptarla en el negocio', ev: 'Growth Rockstar · 2026', dur: '1:13:06' },
+  { id: 'xFQg2ETsvAQ', t: 'Generar impacto en Ualá como Chief Data & AI Officer', ev: 'teramot · 2026', dur: '57:19' },
+  { id: 'RUly08iHi4o', t: 'Cómo es trabajar en la cocina de los datos de un unicornio fintech', ev: 'IA sin Humo · Edvai · 2026', dur: '44:19' },
+  { id: '9tQG1bud6RQ', t: 'Axel desde el Polo, con el CDAO de Ualá', ev: 'ENE Polo Tecnológico · 2025', dur: '1:03:11' },
+  { id: 'drWsubQdGes', t: 'Gestionar clientes con Business Analytics e IA', ev: 'Master Sounds · 2024', dur: '31:15' },
+  { id: 'MOkcu0i-TpM', t: 'Transformar las finanzas con tecnología', ev: 'Sin letra chica · Ualá · 2023', dur: '22:48' },
+  { id: 'nZ26dmdCrx4', t: 'Del relato a los datos', ev: 'Work&Coffee · Morph Global · 2022', dur: '35:23' },
+];
+
+const podcasts = [
+  { show: 'Podcast para CEOs', t: 'Caso Ualá: la fintech que se convirtió en unicornio', y: '2023', href: 'https://podcasts.apple.com/us/podcast/11-caso-ual%C3%A1-pablo-guzzi-chief-data-analytics-officer/id1691585938?i=1000623266598' },
+  { show: 'Inteligencia Colectiva', t: '¿Cómo entender a sus clientes mediante datos?', y: '2022', href: 'https://open.spotify.com/episode/46VmpQVbR42fsqx1BqnTrc' },
+];
+
 const serie = [
   'Context engineering',
   'Memoria de agentes',
@@ -95,7 +111,7 @@ const schema = {
           <li><a href="#trayectoria">Trayectoria</a></li>
           <li><a href="#charlas">Charlas</a></li>
           <li><a href="#docencia">Docencia</a></li>
-          <li><a href="/ai-implementation">Guzzi AI</a></li>
+          <li><a href="#entrevistas">Entrevistas</a></li>
         </ul>
       </nav>
       <a class="btn btn--sm" href={contactHref} {...ext} data-cta="home-nav">Hablemos</a>
@@ -117,7 +133,7 @@ const schema = {
           </p>
           <div class="actions">
             <a class="btn btn--glow" href={contactHref} {...ext} data-cta="home-hero">Hablemos</a>
-            <a class="btn btn--ghost" href="/ai-implementation">Conocer Guzzi AI</a>
+            <a class="btn btn--ghost" href="#entrevistas">Ver entrevistas</a>
           </div>
         </div>
 
@@ -165,22 +181,6 @@ const schema = {
             </article>
           ))}
         </div>
-      </div>
-    </section>
-
-    <!-- GUZZI AI -->
-    <section class="promo grid-bg" aria-labelledby="promo-t">
-      <div class="glow glow--left" aria-hidden="true"></div>
-      <div class="wrap promo__in">
-        <div>
-          <p class="eyebrow"><span class="mark mark--xs">guzzi<span class="mark__ai">AI</span></span></p>
-          <h2 id="promo-t">Menos pilotos. Más IA en <span class="hl">producción.</span></h2>
-          <p class="intro">
-            Automatizamos los procesos manuales de tu operación con IA: diagnóstico, diseño y construcción
-            hands-on, hasta dejar la solución funcionando.
-          </p>
-        </div>
-        <a class="btn btn--glow" href="/ai-implementation" data-cta="home-promo">Ver Guzzi AI</a>
       </div>
     </section>
 
@@ -271,8 +271,53 @@ const schema = {
       </div>
     </section>
 
+    <!-- ENTREVISTAS -->
+    <section class="section section--panel" id="entrevistas" aria-labelledby="entre-t">
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Entrevistas y podcasts</p>
+            <h2 id="entre-t">Conversaciones sobre datos, IA <span class="hl">y liderazgo.</span></h2>
+          </div>
+          <p class="intro">
+            Entrevistas en podcasts y canales de la industria donde cuento cómo se arma un área de datos e IA
+            que mueve el negocio, qué aprendimos en Ualá y cómo adoptar IA sin quedarse en pilotos.
+          </p>
+        </div>
+        <div class="videos">
+        <ul class="videos__list">
+          {entrevistas.map((v) => (
+            <li>
+              <a class="video" href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener" data-cta={`entrevista-${v.id}`}>
+                <span class="video__thumb">
+                  <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" loading="lazy" onerror="this.remove()" />
+                  <span class="video__play" aria-hidden="true"></span>
+                  <span class="video__dur">{v.dur}</span>
+                </span>
+                <span class="video__body">
+                  <span class="kicker">{v.ev}</span>
+                  <span class="video__t">{v.t}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        </div>
+        <h3 class="subhead">Solo audio</h3>
+        <ol class="rows rows--quiet">
+          {podcasts.map((p) => (
+            <li class="row">
+              <span class="row__y">{p.y}</span>
+              <span class="row__org">{p.show}</span>
+              <span class="row__t"><a class="more" href={p.href} target="_blank" rel="noopener">{p.t} <span aria-hidden="true">→</span></a></span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
     <!-- DOCENCIA -->
-    <section class="section section--panel" id="docencia" aria-labelledby="doc-t">
+    <section class="section" id="docencia" aria-labelledby="doc-t">
       <div class="wrap">
         <div class="split">
           <div>
@@ -354,7 +399,7 @@ const schema = {
     <div class="wrap foot__in">
       <p><span class="mark mark--sm">pablo guzzi</span></p>
       <p>
-        {SITE.city} · <a href="/ai-implementation">Guzzi AI</a>
+        {SITE.city}
         {SITE.linkedinUrl && <> · <a href={SITE.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a></>}
         {SITE.youtubeUrl && <> · <a href={SITE.youtubeUrl} target="_blank" rel="noopener">YouTube</a></>}
         · © {new Date().getFullYear()}
