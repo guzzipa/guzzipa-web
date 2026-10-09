@@ -1,0 +1,367 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+
+const title = 'Pablo Guzzi';
+const description =
+  'Ex Chief Data & AI Officer en Ualá. 15+ años liderando datos e IA. Advisory, consultoría y liderazgo fraccional para llevar la IA a la operación.';
+
+const contactHref = SITE.formUrl || '#contacto';
+const ext = SITE.formUrl ? { target: '_blank', rel: 'noopener' } : {};
+
+const ofertas = [
+  {
+    k: 'Advisory',
+    t: 'Criterio para decidir',
+    d: 'Para directorios, CEOs y equipos de liderazgo que necesitan una mirada experta sobre datos e IA: estrategia, priorización, arquitectura, equipos y proveedores.',
+  },
+  {
+    k: 'Consultoría',
+    t: 'IA en la operación',
+    d: 'Proyectos concretos para automatizar procesos y llevar casos de uso a producción, a través de Guzzi AI.',
+    link: { href: '/ai-implementation', label: 'Conocer Guzzi AI' },
+  },
+  {
+    k: 'Fractional',
+    t: 'Liderazgo a tiempo parcial',
+    d: 'Rol de Chief Data o Chief AI Officer fraccional para empresas que todavía no necesitan uno full time: hoja de ruta, armado del equipo y ejecución.',
+  },
+];
+
+const roles = [
+  { y: '2021 – 2026', org: 'Ualá', role: 'Chief Data & AI Officer' },
+  { y: '2020 – 2021', org: 'Naranja X', role: 'Chief Data & Analytics Officer' },
+];
+const antes = ['YPF', 'Garbarino', 'Banco Comafi', 'DirecTV LatAm', 'Red Link', 'INDEC'];
+
+const formacion = [
+  { y: '2018', t: 'MBA', org: 'Universidad Torcuato Di Tella' },
+  { y: '2014', t: 'Magíster en Data Mining y Knowledge Discovery', org: 'Universidad de Buenos Aires' },
+  { y: '2012', t: 'Licenciatura en Estadística', org: 'Universidad Nacional de Tres de Febrero' },
+];
+
+const docencia = [
+  { y: '2021 – hoy', org: 'Coderhouse', t: 'Director de la carrera de Data Science & Analytics' },
+  { y: '2022 – hoy', org: 'UdeSA · Austral · Di Tella', t: 'Profesor invitado en programas ejecutivos' },
+  { y: '2012 – 2025', org: 'UNTREF', t: 'Profesor de Data Mining y Muestreo' },
+];
+
+const charlas = [
+  { src: '/img/charla-uala-datathon.jpg', alt: 'Pablo Guzzi presentando ante una audiencia en el datathon de Ualá', cap: 'Datathon en Ualá', area: 'a' },
+  { src: '/img/charla-cms-2026.jpg', alt: 'Pablo Guzzi hablando con micrófono en el CMS Fin & Pay Latam Forum 2026', cap: 'CMS Fin & Pay Latam Forum 2026', area: 'b' },
+  { src: '/img/charla-panel-1.jpg', alt: 'Pablo Guzzi en un panel, sentado en un sillón con micrófono', cap: 'Panel en escenario', area: 'c' },
+  { src: '/img/charla-panel-2.jpg', alt: 'Pablo Guzzi en un panel con micrófono', cap: 'Panel en escenario', area: 'd' },
+  { src: '/img/charla-uala-escenario.jpg', alt: 'Pablo Guzzi presentando en el auditorio de Ualá', cap: 'Presentación en Ualá', area: 'e' },
+  { src: '/img/evento-cdo-latam-2025.jpg', alt: 'Credencial de speaker de Pablo Guzzi en el Congreso CDO LATAM 2025, Bogotá', cap: 'CDO LATAM 2025 · Bogotá', area: 'f', flyer: true },
+  { src: '/img/evento-aifi-25.jpg', alt: 'Placa de speaker de Pablo Guzzi en AIFI-25, Buenos Aires', cap: 'AIFI-25 · Buenos Aires', area: 'g', flyer: true },
+];
+
+const videos = [
+  { id: 'AR7m4KI5Wtk', t: 'El futuro de Data & Analytics en la bancarización', ev: 'CDO LATAM Summit 2022', dur: '40:46' },
+  { id: 'YDKR0YHoZ3o', t: 'Charla abierta sobre inteligencia artificial: experiencias de un camino sinuoso', ev: 'FAMAF 2022', dur: '1:21:16' },
+];
+
+const serie = [
+  'Context engineering',
+  'Memoria de agentes',
+  'Grounding organizacional',
+  'Interoperabilidad de agentes',
+  'Escalado agéntico',
+  'Identidad de agentes',
+  'Observabilidad y evaluación',
+  'Seguridad agéntica',
+  'Orquestación multi-agente',
+  'Capa semántica',
+];
+
+const schema = {
+  '@type': 'Person',
+  name: SITE.fullName,
+  url: SITE.url,
+  jobTitle: 'Data & AI Advisor',
+  alumniOf: ['Universidad Torcuato Di Tella', 'Universidad de Buenos Aires', 'Universidad Nacional de Tres de Febrero'],
+  sameAs: [SITE.linkedinUrl, SITE.youtubeUrl].filter(Boolean),
+};
+---
+<Base title={title} description={description} schema={schema}>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
+
+  <header class="nav">
+    <div class="wrap nav__in">
+      <a class="mark" href="#top" aria-label="Pablo Guzzi, inicio">pablo guzzi</a>
+      <nav aria-label="Secciones">
+        <ul class="nav__links">
+          <li><a href="#como-ayudo">Cómo puedo ayudar</a></li>
+          <li><a href="#trayectoria">Trayectoria</a></li>
+          <li><a href="#charlas">Charlas</a></li>
+          <li><a href="#docencia">Docencia</a></li>
+          <li><a href="/ai-implementation">Guzzi AI</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--sm" href={contactHref} {...ext} data-cta="home-nav">Hablemos</a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- HERO -->
+    <section class="hero grid-bg" id="top">
+      <div class="glow glow--hero" aria-hidden="true"></div>
+      <div class="wrap hero__grid hero__grid--me">
+        <div class="hero__copy">
+          <p class="eyebrow">Data &amp; AI leadership · Buenos Aires</p>
+          <h1 class="h1--name">Pablo<br /><span class="hl">Guzzi.</span></h1>
+          <p class="lede">
+            Fui Chief Data &amp; AI Officer en Ualá y llevo más de 15 años liderando datos e IA en fintech,
+            energía, retail y telecomunicaciones. Hoy ayudo a empresas a llevar la IA a la operación como
+            advisor, consultor y líder fraccional.
+          </p>
+          <div class="actions">
+            <a class="btn btn--glow" href={contactHref} {...ext} data-cta="home-hero">Hablemos</a>
+            <a class="btn btn--ghost" href="/ai-implementation">Conocer Guzzi AI</a>
+          </div>
+        </div>
+
+        <div class="me">
+          {SITE.hasPhoto ? (
+            <img class="me__photo me__photo--tall" src="/pablo-full.jpg" alt="Pablo Guzzi, retrato en blanco y negro" width="830" height="1068" />
+          ) : (
+            <div class="me__photo placeholder" role="img" aria-label="Foto pendiente">
+              <span>[Foto de Pablo]</span>
+              <small>public/pablo.jpg + hasPhoto: true</small>
+            </div>
+          )}
+          <div class="status">
+            <p class="status__head"><span class="dot" aria-hidden="true"></span>Disponible para</p>
+            <ul>
+              <li>Advisory</li>
+              <li>Consultoría</li>
+              <li>Fractional CDO / CAIO</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÓMO PUEDO AYUDAR -->
+    <section class="section" id="como-ayudo" aria-labelledby="ayudo-t">
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Cómo puedo ayudar</p>
+            <h2 id="ayudo-t">Tres formas de trabajar <span class="hl">juntos.</span></h2>
+          </div>
+          <p class="intro">
+            Según lo que necesite tu empresa: una mirada experta para decidir, un equipo que construya, o
+            alguien que lidere datos e IA desde adentro.
+          </p>
+        </div>
+        <div class="cards cards--3">
+          {ofertas.map((o) => (
+            <article class="card card--bar">
+              <p class="kicker">{o.k}</p>
+              <h3>{o.t}</h3>
+              <p>{o.d}</p>
+              {o.link && <a class="more" href={o.link.href}>{o.link.label} <span aria-hidden="true">→</span></a>}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- GUZZI AI -->
+    <section class="promo grid-bg" aria-labelledby="promo-t">
+      <div class="glow glow--left" aria-hidden="true"></div>
+      <div class="wrap promo__in">
+        <div>
+          <p class="eyebrow"><span class="mark mark--xs">guzzi<span class="mark__ai">AI</span></span></p>
+          <h2 id="promo-t">Menos pilotos. Más IA en <span class="hl">producción.</span></h2>
+          <p class="intro">
+            Automatizamos los procesos manuales de tu operación con IA: diagnóstico, diseño y construcción
+            hands-on, hasta dejar la solución funcionando.
+          </p>
+        </div>
+        <a class="btn btn--glow" href="/ai-implementation" data-cta="home-promo">Ver Guzzi AI</a>
+      </div>
+    </section>
+
+    <!-- TRAYECTORIA -->
+    <section class="section" id="trayectoria" aria-labelledby="tray-t">
+      <div class="wrap">
+        <p class="eyebrow">Trayectoria</p>
+        <h2 id="tray-t">15+ años construyendo áreas de <span class="hl">datos e IA.</span></h2>
+
+        <ol class="rows">
+          {roles.map((r) => (
+            <li class="row">
+              <span class="row__y">{r.y}</span>
+              <span class="row__org">{r.org}</span>
+              <span class="row__t">{r.role}</span>
+            </li>
+          ))}
+          <li class="row">
+            <span class="row__y">Antes</span>
+            <span class="row__org">Liderazgo de datos</span>
+            <span class="row__t">
+              <ul class="tags">{antes.map((a) => <li>{a}</li>)}</ul>
+            </span>
+          </li>
+        </ol>
+
+        <h3 class="subhead">Formación</h3>
+        <ol class="rows rows--quiet">
+          {formacion.map((f) => (
+            <li class="row">
+              <span class="row__y">{f.y}</span>
+              <span class="row__org">{f.t}</span>
+              <span class="row__t">{f.org}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- CHARLAS -->
+    <section class="section" id="charlas" aria-labelledby="charlas-t">
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Charlas y eventos</p>
+            <h2 id="charlas-t">Lo que aprendí, <span class="hl">en escenario.</span></h2>
+          </div>
+          <p class="intro">
+            Comparto lo que funciona y lo que no al llevar datos e IA a la operación: en congresos de la
+            industria, foros de fintech, universidades y equipos internos.
+          </p>
+        </div>
+
+        <ul class="gallery" aria-label="Fotos de charlas y eventos">
+          {charlas.map((c) => (
+            <li class={`g g--${c.area}${c.flyer ? ' g--flyer' : ''}`}>
+              <img src={c.src} alt={c.alt} />
+              <span class="g__cap">{c.cap}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="videos">
+          <div class="videos__head">
+            <h3>Charlas completas en video</h3>
+            {SITE.youtubeUrl && (
+              <a class="more" href={SITE.youtubeUrl} target="_blank" rel="noopener" data-cta="home-youtube">Ver el canal de YouTube <span aria-hidden="true">→</span></a>
+            )}
+          </div>
+          <ul class="videos__list">
+            {videos.map((v) => (
+              <li>
+                <a class="video" href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener" data-cta={`video-${v.id}`}>
+                  <span class="video__thumb">
+                    <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" loading="lazy" onerror="this.remove()" />
+                    <span class="video__play" aria-hidden="true"></span>
+                    <span class="video__dur">{v.dur}</span>
+                  </span>
+                  <span class="video__body">
+                    <span class="kicker">{v.ev}</span>
+                    <span class="video__t">{v.t}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOCENCIA -->
+    <section class="section section--panel" id="docencia" aria-labelledby="doc-t">
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Docencia</p>
+            <h2 id="doc-t">Enseñar es parte de <span class="hl">cómo trabajo.</span></h2>
+          </div>
+          <p class="intro">
+            Desde 2012 doy clases de datos e IA, de la universidad a programas ejecutivos. Si querés que dé
+            una charla o un taller para tu equipo, escribime.
+          </p>
+        </div>
+        <div class="cards cards--3">
+          {docencia.map((d) => (
+            <article class="card">
+              <p class="kicker">{d.y}</p>
+              <h3>{d.org}</h3>
+              <p>{d.t}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENIDO -->
+    <section class="section" id="contenido-linkedin" aria-labelledby="cont-t">
+      <div class="wrap split split--top">
+        <div>
+          <p class="eyebrow">Contenido</p>
+          <h2 id="cont-t">Escribo sobre IA agéntica <span class="hl">aplicada a empresas.</span></h2>
+          <p class="followers"><span class="followers__n">36.000+</span> seguidores en LinkedIn</p>
+          <p class="intro">
+            En LinkedIn publico una serie que explica, concepto por concepto, lo que hace falta para que los
+            agentes de IA funcionen dentro de una organización.
+          </p>
+          <div class="actions actions--gap">
+            {SITE.linkedinUrl ? (
+              <a class="btn btn--glow" href={SITE.linkedinUrl} target="_blank" rel="noopener" data-cta="home-linkedin">Seguirme en LinkedIn</a>
+            ) : (
+              <span class="pending">[Link de LinkedIn pendiente]</span>
+            )}
+            {SITE.youtubeUrl && (
+              <a class="btn btn--ghost" href={SITE.youtubeUrl} target="_blank" rel="noopener" data-cta="home-youtube-2">YouTube</a>
+            )}
+          </div>
+        </div>
+        <ol class="series" aria-label="Conceptos de la serie">
+          {serie.map((s, i) => (
+            <li><span class="series__n">{String(i + 1).padStart(2, '0')}</span>{s}</li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="final grid-bg" id="contacto" aria-labelledby="final-t">
+      <div class="glow glow--final" aria-hidden="true"></div>
+      <div class="wrap final__in">
+        <p class="eyebrow">Contacto</p>
+        <h2 id="final-t"><span class="hl">Hablemos.</span></h2>
+        <p>
+          Si estás evaluando un rol de advisory, un proyecto de IA o liderazgo fraccional de datos, contame
+          en qué estás y te respondo personalmente.
+        </p>
+        <div class="actions actions--center">
+          {SITE.formUrl ? (
+            <a class="btn btn--glow" href={SITE.formUrl} target="_blank" rel="noopener" data-cta="home-final">Escribime</a>
+          ) : (
+            <span class="pending">[Link del formulario pendiente]</span>
+          )}
+          {SITE.linkedinUrl && (
+            <a class="btn btn--ghost" href={SITE.linkedinUrl} target="_blank" rel="noopener" data-cta="home-final-linkedin">LinkedIn</a>
+          )}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <p><span class="mark mark--sm">pablo guzzi</span></p>
+      <p>
+        {SITE.city} · <a href="/ai-implementation">Guzzi AI</a>
+        {SITE.linkedinUrl && <> · <a href={SITE.linkedinUrl} target="_blank" rel="noopener">LinkedIn</a></>}
+        {SITE.youtubeUrl && <> · <a href={SITE.youtubeUrl} target="_blank" rel="noopener">YouTube</a></>}
+        · © {new Date().getFullYear()}
+      </p>
+      <p class="foot__legal">
+        Las empresas mencionadas describen mi trayectoria profesional. Ninguna participa de mis servicios actuales ni los avala.
+      </p>
+    </div>
+  </footer>
+</Base>

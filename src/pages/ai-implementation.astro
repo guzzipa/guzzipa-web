@@ -1,0 +1,282 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+
+const title = 'Guzzi AI · IA en producción';
+const description =
+  'Automatizamos los procesos manuales de tu operación con IA, desde entender cómo trabaja tu equipo hasta dejar la solución funcionando. Liderado por Pablo Guzzi, ex Chief Data & AI Officer en Ualá.';
+
+// Si todavía no hay link de formulario, los botones llevan a la sección de contacto.
+const ctaHref = SITE.formUrl || '#contacto';
+const ext = SITE.formUrl ? { target: '_blank', rel: 'noopener' } : {};
+
+const situaciones = [
+  { t: 'El reporte de los lunes', d: 'Alguien pasa horas copiando datos de tres sistemas a una planilla. Todas las semanas.' },
+  { t: 'La pestaña de ChatGPT', d: 'El equipo lo usa, cada uno a su manera. Nada queda integrado al proceso.' },
+  { t: 'El piloto que no salió de la demo', d: 'Funcionó en la presentación y nunca llegó a producción.' },
+  { t: 'La lista de ideas', d: 'Hay veinte casos de uso posibles y nadie sabe por cuál empezar.' },
+];
+
+const capacidades = [
+  { t: 'Diagnóstico y priorización', d: 'Relevamos cómo trabaja tu equipo, dónde se pierden horas y qué oportunidades tienen más impacto con menos riesgo. Salís con una lista corta y ordenada, no con un deck.' },
+  { t: 'Diseño de la solución', d: 'Definimos qué se automatiza, con qué herramientas, cómo se integra con tus sistemas y cómo vamos a saber si funciona.' },
+  { t: 'Construcción hands-on', d: 'Construimos la automatización, el agente o la integración. Primeras versiones que se usan de verdad, no prototipos de vitrina.' },
+];
+
+const formatos = ['Proyecto acotado', 'Acompañamiento continuo', 'Capacitación del equipo'];
+
+const pasos = [
+  { t: 'Una conversación', d: 'Nos contás qué proceso te preocupa o qué idea tenés dando vueltas.' },
+  { t: 'Entender el proceso', d: 'Miramos cómo se hace hoy, quién participa y qué sistemas toca.' },
+  { t: 'Definir el alcance', d: 'Acordamos qué se construye, quién es responsable y qué significa que salga bien.' },
+  { t: 'Una propuesta concreta', d: 'Te pasamos un proyecto con alcance claro. Si no tiene sentido avanzar, te lo decimos.' },
+];
+
+const preguntas = [
+  '¿Qué tarea se repite todas las semanas y nadie quiere hacer?',
+  '¿Dónde se copia información a mano de un sistema a otro?',
+  '¿Qué decisión depende de un reporte que siempre llega tarde?',
+];
+
+const schema = {
+  '@type': 'ProfessionalService',
+  name: SITE.brand,
+  url: new URL('/ai-implementation', SITE.url).toString(),
+  areaServed: 'Latin America',
+  founder: { '@type': 'Person', name: SITE.fullName, jobTitle: 'Ex Chief Data & AI Officer en Ualá' },
+};
+---
+<Base title={title} description={description} ogImage="/og-ai.png" siteName={SITE.brand} schema={schema}>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
+
+  <header class="nav">
+    <div class="wrap nav__in">
+      <a class="mark" href="#top" aria-label="Guzzi AI, inicio de la sección">guzzi<span class="mark__ai">AI</span></a>
+      <nav aria-label="Secciones">
+        <ul class="nav__links">
+          <li><a href="#que-hacemos">Qué hacemos</a></li>
+          <li><a href="#como-empezamos">Cómo empezamos</a></li>
+          <li><a href="#quien-lidera">Quién lidera</a></li>
+          <li><a href="/">Pablo Guzzi</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--sm" href={ctaHref} {...ext} data-cta="nav">Contanos tu caso</a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- HERO -->
+    <section class="hero grid-bg" id="top">
+      <div class="glow glow--hero" aria-hidden="true"></div>
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow">IA aplicada a la operación</p>
+          <h1>Menos pilotos.<br />Más IA en <span class="hl">producción.</span></h1>
+          <p class="lede">
+            Automatizamos los procesos manuales de tu operación con IA: desde entender cómo trabaja tu equipo
+            hasta dejar la solución funcionando.
+          </p>
+          <div class="actions">
+            <a class="btn btn--glow" href={ctaHref} {...ext} data-cta="hero">Contanos qué querés automatizar</a>
+            <a class="btn btn--ghost" href="#que-hacemos">Ver cómo trabajamos</a>
+          </div>
+          <ul class="chips" aria-label="Qué incluye">
+            <li>Diagnóstico</li>
+            <li>Diseño</li>
+            <li>Construcción hands-on</li>
+          </ul>
+        </div>
+
+        <figure class="flow" aria-label="Ejemplo de cómo avanza un proceso, de manual a automatizado">
+          <figcaption class="flow__cap">Ejemplo de recorrido</figcaption>
+          <ol class="flow__list">
+            <li class="flow__step">
+              <span class="flow__state">Proceso actual</span>
+              <span class="flow__text">Una persona arma la planilla a mano todos los lunes</span>
+            </li>
+            <li class="flow__step">
+              <span class="flow__state">Oportunidad</span>
+              <span class="flow__text">Los datos ya existen en tres sistemas; falta unirlos</span>
+            </li>
+            <li class="flow__step flow__step--live">
+              <span class="flow__state"><span class="dot" aria-hidden="true"></span>En producción</span>
+              <span class="flow__text">El reporte llega solo y alguien lo revisa en minutos</span>
+            </li>
+          </ol>
+        </figure>
+      </div>
+
+      <div class="wrap">
+        <p class="cred">
+          <span>Liderado por <a href="/"><strong>Pablo Guzzi</strong></a></span>
+          <span>Ex Chief Data &amp; AI Officer en Ualá (2021–2026)</span>
+          <span>15+ años liderando datos e IA</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- PROBLEMA -->
+    <section class="section" aria-labelledby="problema-t">
+      <div class="wrap">
+        <p class="eyebrow">El problema</p>
+        <h2 id="problema-t">La IA ya llegó a tu empresa. <span class="hl">A la operación, todavía no.</span></h2>
+        <p class="intro">
+          Hay entusiasmo, hay herramientas y hay pruebas. Lo que suele faltar es que algo de eso cambie cómo
+          se trabaja el lunes a la mañana.
+        </p>
+        <ul class="cards cards--2">
+          {situaciones.map((s) => (
+            <li class="card">
+              <h3>{s.t}</h3>
+              <p>{s.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- FRASE -->
+    <section class="statement" aria-label="Dónde trabajamos">
+      <div class="wrap">
+        <p>
+          Hablar de IA es fácil. Lo difícil es elegir el proceso correcto, integrarlo con los sistemas que ya
+          existen y lograr que el equipo lo adopte. <span class="hl">Ahí es donde trabajamos.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- QUÉ HACEMOS -->
+    <section class="section grid-bg" id="que-hacemos" aria-labelledby="hacemos-t">
+      <div class="glow glow--left" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Qué hacemos</p>
+            <h2 id="hacemos-t">Del proceso manual a la <span class="hl">solución funcionando.</span></h2>
+          </div>
+          <p class="intro">
+            Tres capacidades que se combinan según el caso. El foco está en lo último: que la automatización
+            quede andando dentro de la operación.
+          </p>
+        </div>
+        <div class="cards cards--3">
+          {capacidades.map((c) => (
+            <article class="card card--bar">
+              <h3>{c.t}</h3>
+              <p>{c.d}</p>
+            </article>
+          ))}
+        </div>
+        <ul class="strip" aria-label="Formas de trabajo">
+          {formatos.map((f) => <li><span class="dot dot--static" aria-hidden="true"></span>{f}</li>)}
+        </ul>
+        <p class="note">
+          Podemos trabajar en un proyecto acotado, con alcance y entregables claros, o con acompañamiento
+          continuo mientras la IA se vuelve parte de la operación. Si hace falta, también capacitamos al equipo
+          para que lo construido se use y se sostenga.
+        </p>
+      </div>
+    </section>
+
+    <!-- CÓMO EMPEZAMOS -->
+    <section class="section" id="como-empezamos" aria-labelledby="empezar-t">
+      <div class="wrap center">
+        <p class="eyebrow">Cómo empezamos</p>
+        <h2 id="empezar-t">Cómo suele <span class="hl">empezar.</span></h2>
+      </div>
+      <div class="wrap">
+        <ol class="timeline">
+          {pasos.map((p, i) => (
+            <li class="tl">
+              <span class="tl__dot" aria-hidden="true"></span>
+              <span class="tl__n">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{p.t}</h3>
+              <p>{p.d}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="aside">Cada empresa es distinta. Esto es un punto de partida, no un método cerrado.</p>
+      </div>
+    </section>
+
+    <!-- POR DÓNDE EMPEZAR -->
+    <section class="section section--panel" aria-labelledby="preguntas-t">
+      <div class="wrap split split--top">
+        <div>
+          <p class="eyebrow">Por dónde empezar</p>
+          <h2 id="preguntas-t">Tres preguntas para encontrar tu <span class="hl">primer caso.</span></h2>
+          <p class="intro">
+            No hace falta que llegues con el caso de uso definido. Si sabés qué parte de la operación consume
+            más horas o genera más errores, alcanza para empezar. Priorizar es parte del trabajo.
+          </p>
+        </div>
+        <ul class="checks">
+          {preguntas.map((q) => <li><span class="dot dot--static" aria-hidden="true"></span>{q}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- QUIÉN LIDERA -->
+    <section class="section" id="quien-lidera" aria-labelledby="lidera-t">
+      <div class="wrap about">
+        <div class="about__photo">
+          {SITE.hasPhoto ? (
+            <img src="/pablo.jpg" alt="Pablo Guzzi" width="480" height="480" loading="lazy" />
+          ) : (
+            <div class="placeholder" role="img" aria-label="Foto pendiente">
+              <span>[Foto de Pablo]</span>
+              <small>public/pablo.jpg + hasPhoto: true</small>
+            </div>
+          )}
+        </div>
+        <div class="about__text">
+          <p class="eyebrow">Quién lidera</p>
+          <h2 id="lidera-t">Detrás de Guzzi AI está <span class="hl">Pablo Guzzi.</span></h2>
+          <p>
+            Fue Chief Data &amp; AI Officer en Ualá entre 2021 y 2026 y, antes, Chief Data &amp; Analytics
+            Officer en Naranja X. Lideró equipos de datos en YPF, Garbarino, Banco Comafi, DirecTV LatAm,
+            Red Link e INDEC.
+          </p>
+          <p>
+            De esos años sale la convicción que guía cada proyecto: la IA genera valor cuando entra en la
+            operación de todos los días, no cuando se queda en una presentación. Pablo está en cada proyecto,
+            de la primera conversación a la puesta en producción.
+          </p>
+          <div class="actions">
+            <a class="btn btn--ghost" href="/">Conocer a Pablo</a>
+            {SITE.linkedinUrl && <a class="more" href={SITE.linkedinUrl} target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">→</span></a>}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="final grid-bg" id="contacto" aria-labelledby="final-t">
+      <div class="glow glow--final" aria-hidden="true"></div>
+      <div class="wrap final__in">
+        <p class="eyebrow">Contacto</p>
+        <h2 id="final-t">Contanos qué tarea se repite <span class="hl">todas las semanas</span> en tu equipo.</h2>
+        <p>Con dos líneas alcanza. Te respondemos personalmente y vemos si hay un proyecto que tenga sentido.</p>
+        <div class="actions actions--center">
+          {SITE.formUrl ? (
+            <a class="btn btn--glow" href={SITE.formUrl} target="_blank" rel="noopener" data-cta="final">
+              Contanos qué querés automatizar
+            </a>
+          ) : (
+            <span class="pending">[Link del formulario pendiente]</span>
+          )}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <p><span class="mark mark--sm">guzzi<span class="mark__ai">AI</span></span></p>
+      <p>Una iniciativa de <a href="/">{SITE.fullName}</a> · {SITE.city} · © {new Date().getFullYear()}</p>
+      <p class="foot__legal">
+        Las empresas mencionadas describen la trayectoria profesional de Pablo Guzzi. Ninguna participa de esta propuesta ni la avala.
+      </p>
+    </div>
+  </footer>
+</Base>
