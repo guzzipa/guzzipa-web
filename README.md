@@ -40,7 +40,7 @@ npm run build    # genera la carpeta dist/
 
 ### Opción B: conectado a GitHub (se publica solo en cada cambio)
 
-1. Subí este proyecto a un repo, por ejemplo `github.com/guzzipa/guzzi-ai`.
+1. El repo es `github.com/guzzipa/guzzipa-web` y ya está conectado: cada push a `main` publica solo.
 2. En Cloudflare: **Workers & Pages → Create → Pages → Connect to Git** y elegí el repo.
 3. Framework preset: **Astro**. Build command: `npm run build`. Output directory: `dist`.
 
