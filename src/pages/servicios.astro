@@ -1,0 +1,137 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+import { catalogo, totalServicios } from '../data/servicios';
+
+const title = 'Servicios · Pablo Guzzi';
+const description =
+  'Estrategia, implementación, liderazgo fraccional, mentoría y formación en datos e IA. El catálogo completo de servicios de Pablo Guzzi, ex Chief Data & AI Officer en Ualá.';
+
+const contactHref = SITE.formUrl || '/#contacto';
+const ext = SITE.formUrl ? { target: '_blank', rel: 'noopener' } : {};
+
+const formatos = [
+  { t: 'Proyecto acotado', d: 'Alcance, entregables y plazo definidos desde el inicio.' },
+  { t: 'Horas de advisory', d: 'Un set de horas mensuales para usar cuando las necesites.' },
+  { t: 'Acompañamiento continuo', d: 'Presencia sostenida mientras la IA se vuelve parte de la operación.' },
+];
+
+const schema = {
+  '@type': 'OfferCatalog',
+  name: 'Servicios de datos e IA de Pablo Guzzi',
+  itemListElement: catalogo.flatMap((g) =>
+    g.items.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.t, description: s.d } })),
+  ),
+};
+---
+<Base title={title} description={description} schema={schema}>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
+
+  <header class="nav">
+    <div class="wrap nav__in">
+      <a class="mark" href="/" aria-label="Pablo Guzzi, inicio">pablo guzzi</a>
+      <nav aria-label="Grupos de servicios">
+        <ul class="nav__links">
+          {catalogo.map((g) => <li><a href={`#${g.id}`}>{g.t}</a></li>)}
+        </ul>
+      </nav>
+      <a class="btn btn--sm" href={contactHref} {...ext} data-cta="svc-nav">Hablemos</a>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero grid-bg hero--compact" id="top">
+      <div class="glow glow--hero" aria-hidden="true"></div>
+      <div class="wrap">
+        <p class="eyebrow">Servicios</p>
+        <h1 class="h1--name">Todo lo que puedo hacer <span class="hl">por tu empresa.</span></h1>
+        <p class="lede">
+          {totalServicios} servicios para llevar los datos y la IA de la estrategia a la operación. Salen de más
+          de 15 años liderando estas áreas, los últimos cinco como Chief Data &amp; AI Officer en Ualá.
+        </p>
+        <ul class="svc-index" aria-label="Grupos">
+          {catalogo.map((g) => (
+            <li>
+              <a href={`#${g.id}`}>
+                <span class="kicker">{g.k}</span>
+                <strong>{g.t}</strong>
+                <span class="svc-index__n">{g.items[0].n}–{g.items[g.items.length - 1].n}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {catalogo.map((g, gi) => (
+      <section class={`section${gi % 2 ? ' section--panel' : ''}`} id={g.id} aria-labelledby={`${g.id}-t`}>
+        <div class="wrap">
+          <div class="split">
+            <div>
+              <p class="eyebrow">{g.k}</p>
+              <h2 id={`${g.id}-t`}>{g.t}</h2>
+            </div>
+            <p class="intro">{g.d}</p>
+          </div>
+          <div class="cards cards--2">
+            {g.items.map((s) => (
+              <article class={`card svc-card${s.href === '/ai-implementation' ? ' svc-card--feature' : ''}`} id={`s${s.n}`}>
+                <p class="svc-card__n">{s.n}</p>
+                <h3>{s.t}</h3>
+                <p>{s.d}</p>
+                <dl class="svc-card__meta">
+                  <div><dt>Para quién</dt><dd>{s.para}</dd></div>
+                  <div><dt>Qué te llevás</dt><dd>{s.out}</dd></div>
+                </dl>
+                {s.href ? (
+                  <a class="more" href={s.href} data-cta={`svc-${s.n}`}>{s.cta} <span aria-hidden="true">→</span></a>
+                ) : (
+                  <a class="more" href={contactHref} {...ext} data-cta={`svc-${s.n}`}>Consultar <span aria-hidden="true">→</span></a>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <section class="section" aria-labelledby="formatos-t">
+      <div class="wrap">
+        <p class="eyebrow">Formas de trabajo</p>
+        <h2 id="formatos-t">Cada servicio se adapta <span class="hl">a tu momento.</span></h2>
+        <div class="cards cards--3">
+          {formatos.map((f) => (
+            <article class="card card--bar">
+              <h3>{f.t}</h3>
+              <p>{f.d}</p>
+            </article>
+          ))}
+        </div>
+        <p class="note">
+          Los servicios de implementación los hago junto a un equipo que diseña y construye, y estoy en cada
+          proyecto de la primera conversación a la puesta en producción.
+        </p>
+      </div>
+    </section>
+
+    <section class="final grid-bg" id="contacto" aria-labelledby="final-t">
+      <div class="glow glow--final" aria-hidden="true"></div>
+      <div class="wrap final__in">
+        <p class="eyebrow">Contacto</p>
+        <h2 id="final-t">Contame dónde estás y <span class="hl">armamos el camino.</span></h2>
+        <p>No hace falta que sepas qué servicio necesitás. Con dos líneas sobre tu situación alcanza.</p>
+        <div class="actions actions--center">
+          <a class="btn btn--glow" href={contactHref} {...ext} data-cta="svc-final">Hablemos</a>
+          <a class="btn btn--ghost" href="/">Conocer a Pablo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot__in">
+      <p><span class="mark mark--sm">pablo guzzi</span></p>
+      <p><a href="/">Inicio</a> · <a href="/prensa">Prensa y organizadores</a> · {SITE.city} · © {new Date().getFullYear()}</p>
+    </div>
+  </footer>
+</Base>

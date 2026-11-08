@@ -3,7 +3,9 @@
 Dos páginas con el mismo diseño:
 
 - `/` → página personal de Pablo Guzzi (advisory, consultoría, fractional, trayectoria, docencia, contenido).
-- `/ai-implementation` → Guzzi AI, la propuesta de implementación de IA (escrita en "nosotros").
+- `/servicios` → catálogo completo (se edita en `src/data/servicios.ts`).
+- `/ai-implementation` → Guzzi AI: página de venta del AI Gateway (escrita en "nosotros").
+- `/prensa` → kit para organizadores.
 
 Hecha con [Astro](https://astro.build) (sitio estático), tipografías alojadas en el propio sitio, sin dependencias externas en producción.
 

@@ -1,36 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
+import { catalogo, totalServicios } from '../data/servicios';
 
 const title = 'Pablo Guzzi';
 const description =
-  'Ex Chief Data & AI Officer en Ualá. 15+ años liderando datos e IA. Advisory, consultoría y liderazgo fraccional para llevar la IA a la operación.';
+  'Ex Chief Data & AI Officer en Ualá. 15+ años liderando datos e IA. Estrategia, implementación, liderazgo fraccional, mentoría y formación para llevar la IA a la operación.';
 
 const contactHref = SITE.formUrl || '#contacto';
 const ext = SITE.formUrl ? { target: '_blank', rel: 'noopener' } : {};
-
-const ofertas = [
-  {
-    k: 'Advisory',
-    t: 'Criterio para decidir',
-    d: 'Para directorios, CEOs y equipos de liderazgo que necesitan una mirada experta sobre datos e IA: estrategia, priorización, arquitectura, equipos y proveedores.',
-  },
-  {
-    k: 'Consultoría',
-    t: 'IA en la operación',
-    d: 'Proyectos concretos para automatizar procesos y llevar casos de uso de IA a producción, con un equipo que diseña y construye.',
-  },
-  {
-    k: 'Fractional',
-    t: 'Liderazgo a tiempo parcial',
-    d: 'Rol de Chief Data o Chief AI Officer fraccional para empresas que todavía no necesitan uno full time: hoja de ruta, armado del equipo y ejecución.',
-  },
-  {
-    k: 'Mentoría',
-    t: 'Para líderes de datos e IA',
-    d: 'Acompañamiento uno a uno para quienes lideran o quieren liderar equipos de datos e IA: decisiones difíciles, armado de equipo, carrera y cómo ganar lugar en la mesa del negocio.',
-  },
-];
 
 const roles = [
   { y: '2021 – 2026', org: 'Ualá', role: 'Chief Data & AI Officer' },
@@ -155,7 +133,7 @@ const schema = {
       <a class="mark" href="#top" aria-label="Pablo Guzzi, inicio">pablo guzzi</a>
       <nav aria-label="Secciones">
         <ul class="nav__links">
-          <li><a href="#como-ayudo">Cómo puedo ayudar</a></li>
+          <li><a href="#servicios">Servicios</a></li>
           <li><a href="#trayectoria">Trayectoria</a></li>
           <li><a href="#recomendaciones">Recomendaciones</a></li>
           <li><a href="#charlas">Charlas</a></li>
@@ -176,12 +154,12 @@ const schema = {
           <h1 class="h1--name">Pablo<br /><span class="hl">Guzzi.</span></h1>
           <p class="lede">
             Fui Chief Data &amp; AI Officer en Ualá y llevo más de 15 años liderando datos e IA en fintech,
-            energía, retail y telecomunicaciones. Hoy ayudo a empresas a llevar la IA a la operación como
-            advisor, consultor y líder fraccional.
+            energía, retail y telecomunicaciones. Hoy ayudo a empresas a llevar la IA a la operación: de la
+            estrategia a la implementación, como advisor, consultor, mentor y líder fraccional.
           </p>
           <div class="actions">
             <a class="btn btn--glow" href={contactHref} {...ext} data-cta="home-hero">Hablemos</a>
-            <a class="btn btn--ghost" href="#entrevistas">Ver entrevistas</a>
+            <a class="btn btn--ghost" href="#servicios">Ver servicios</a>
           </div>
         </div>
 
@@ -198,9 +176,10 @@ const schema = {
             <p class="status__head"><span class="dot" aria-hidden="true"></span>Disponible para</p>
             <ul>
               <li>Advisory</li>
-              <li>Consultoría</li>
+              <li>Consultoría e implementación</li>
               <li>Fractional CDO / CAIO</li>
               <li>Mentoría</li>
+              <li>Charlas y workshops</li>
             </ul>
           </div>
         </div>
@@ -222,28 +201,44 @@ const schema = {
       </div>
     </section>
 
-    <!-- CÓMO PUEDO AYUDAR -->
-    <section class="section" id="como-ayudo" aria-labelledby="ayudo-t">
+    <!-- SERVICIOS -->
+    <section class="section" id="servicios" aria-labelledby="serv-t">
       <div class="wrap">
         <div class="split">
           <div>
-            <p class="eyebrow">Cómo puedo ayudar</p>
-            <h2 id="ayudo-t">Cuatro formas de trabajar <span class="hl">juntos.</span></h2>
+            <p class="eyebrow">Servicios</p>
+            <h2 id="serv-t">De la estrategia a la IA <span class="hl">funcionando.</span></h2>
           </div>
           <p class="intro">
-            Según lo que necesites: una mirada experta para decidir, un equipo que construya, alguien que
-            lidere datos e IA desde adentro, o un mentor para tu propio camino como líder.
+            {totalServicios} servicios en cinco grupos. Podés tomar uno solo o combinarlos: decidir, construir,
+            liderar, acompañar y formar.
           </p>
         </div>
-        <div class="cards cards--4">
-          {ofertas.map((o) => (
-            <article class="card card--bar">
-              <p class="kicker">{o.k}</p>
-              <h3>{o.t}</h3>
-              <p>{o.d}</p>
-              {o.link && <a class="more" href={o.link.href}>{o.link.label} <span aria-hidden="true">→</span></a>}
+        <div class="svc">
+          {catalogo.map((g) => (
+            <article class="svc__group">
+              <header class="svc__head">
+                <p class="kicker">{g.k}</p>
+                <h3>{g.t}</h3>
+                <p>{g.d}</p>
+              </header>
+              <ol class="svc__list">
+                {g.items.map((s) => (
+                  <li>
+                    <a href={s.href ?? `/servicios#s${s.n}`} class={s.href === '/ai-implementation' ? 'is-feature' : undefined} data-cta={`home-svc-${s.n}`}>
+                      <span class="svc__n">{s.n}</span>
+                      <span class="svc__t">{s.t}</span>
+                      <span class="svc__go" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
             </article>
           ))}
+        </div>
+        <div class="actions actions--gap">
+          <a class="btn btn--ghost" href="/servicios">Ver todos los servicios en detalle</a>
+          <a class="more" href={contactHref} {...ext} data-cta="home-svc">Si no sabés por cuál empezar, hablemos <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>

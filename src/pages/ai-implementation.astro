@@ -2,48 +2,70 @@
 import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
 
-const title = 'Guzzi AI · IA en producción';
+const title = 'Guzzi AI · AI Gateway para tu empresa';
 const description =
-  'Automatizamos los procesos manuales de tu operación con IA, desde entender cómo trabaja tu equipo hasta dejar la solución funcionando. Liderado por Pablo Guzzi, ex Chief Data & AI Officer en Ualá.';
+  'Implementamos un AI Gateway en tu nube: una sola puerta para que toda tu empresa use cualquier modelo de IA con control de accesos, costos y datos. Liderado por Pablo Guzzi, ex Chief Data & AI Officer en Ualá.';
 
-// Si todavía no hay link de formulario, los botones llevan a la sección de contacto.
 const ctaHref = SITE.formUrl || '#contacto';
 const ext = SITE.formUrl ? { target: '_blank', rel: 'noopener' } : {};
 
-const situaciones = [
-  { t: 'El reporte de los lunes', d: 'Alguien pasa horas copiando datos de tres sistemas a una planilla. Todas las semanas.' },
-  { t: 'La pestaña de ChatGPT', d: 'El equipo lo usa, cada uno a su manera. Nada queda integrado al proceso.' },
-  { t: 'El piloto que no salió de la demo', d: 'Funcionó en la presentación y nunca llegó a producción.' },
-  { t: 'La lista de ideas', d: 'Hay veinte casos de uso posibles y nadie sabe por cuál empezar.' },
+const origenes = ['Apps y servicios', 'Agentes', 'Notebooks', 'Empleados'];
+const controles = ['Identidad y permisos', 'Presupuestos y límites', 'Protección de datos', 'Ruteo y respaldo', 'Costo y auditoría'];
+const destinos = ['OpenAI', 'Anthropic', 'Google Vertex AI', 'AWS Bedrock', 'Azure OpenAI', 'Modelos open source'];
+
+const antesDespues = [
+  { sin: 'Las claves de los proveedores copiadas en decenas de apps y laptops.', con: 'Las claves quedan cifradas en un solo lugar. Cada app y cada persona recibe un acceso propio que se revoca con un clic, o entra con el login de la empresa.' },
+  { sin: 'Una factura sorpresa a fin de mes.', con: 'Topes de gasto por empresa, equipo, persona y aplicación, con alertas antes de llegar al límite y proyección a fin de mes.' },
+  { sin: 'Nadie sabe quién usa qué modelo ni para qué.', con: 'Cada consulta registrada, con su costo por equipo, persona, modelo y cliente final, y reportes listos para imputar a cada centro de costo.' },
+  { sin: 'Datos de clientes que viajan a un modelo externo sin control.', con: 'Detección de datos sensibles (DNI, CUIT, tarjetas, emails, claves) que se registran, se ocultan o se bloquean antes de salir.' },
+  { sin: 'El proveedor elegido quedó escrito en el código.', con: 'Los equipos piden "el modelo rápido" o "el más inteligente" y vos decidís cuál atiende. Cambiar de proveedor no toca una línea de código.' },
+  { sin: 'Si el proveedor se cae, se cae tu producto.', con: 'Respaldo automático hacia otro proveedor o región cuando uno falla o se satura.' },
 ];
 
 const capacidades = [
-  { t: 'Diagnóstico y priorización', d: 'Relevamos cómo trabaja tu equipo, dónde se pierden horas y qué oportunidades tienen más impacto con menos riesgo. Salís con una lista corta y ordenada, no con un deck.' },
-  { t: 'Diseño de la solución', d: 'Definimos qué se automatiza, con qué herramientas, cómo se integra con tus sistemas y cómo vamos a saber si funciona.' },
-  { t: 'Construcción hands-on', d: 'Construimos la automatización, el agente o la integración. Primeras versiones que se usan de verdad, no prototipos de vitrina.' },
+  { k: 'Costos', t: 'FinOps de IA', d: 'Presupuestos en cuatro niveles, costo por request con tus precios negociados, costo por cliente o funcionalidad, reportes en pesos y en dólares, alertas de gasto anómalo y conciliación con las facturas reales.' },
+  { k: 'Seguridad', t: 'Identidad y control', d: 'Login con el proveedor de identidad que ya usás (Okta, Entra ID, Google), altas y bajas automáticas, roles por grupo, modelos permitidos por equipo y auditoría completa.' },
+  { k: 'Datos', t: 'Guardrails', d: 'Detección y ocultamiento de datos personales y secretos, más tus propias palabras y patrones, con reglas por organización y excepciones por equipo.' },
+  { k: 'Libertad', t: 'Cualquier modelo', d: 'Compatible con las APIs de OpenAI y Anthropic. Se conecta a los principales proveedores y a modelos propios, con alias, respaldo automático y pruebas A/B entre modelos.' },
+  { k: 'Agentes', t: 'Gateway para MCP', d: 'Los agentes acceden a herramientas y sistemas internos con los mismos permisos, controles de datos y registro que el resto de la IA.' },
+  { k: 'Dirección', t: 'Vista ejecutiva', d: 'Adopción por equipo, tendencia y proyección de gasto, ahorro, principales casos de uso, calidad de las respuestas, disponibilidad por proveedor y un reporte mensual automático.' },
 ];
 
-const formatos = ['Proyecto acotado', 'Acompañamiento continuo', 'Capacitación del equipo'];
+const porQue = [
+  { t: 'La IA ya está en todas las áreas', d: 'Marketing, atención, legales y tecnología la usan cada uno a su manera. Sin una puerta común, no hay forma de saber cuánto cuesta, qué datos salen ni qué funciona.' },
+  { t: 'Los agentes multiplican el consumo', d: 'Un agente hace decenas de llamadas por tarea y accede a sistemas internos. Gobernarlo después de que escale es mucho más caro que hacerlo antes.' },
+  { t: 'Ningún modelo gana para siempre', d: 'El mejor modelo de hoy no va a ser el de dentro de seis meses. Con un gateway cambiás de proveedor cuando conviene, no cuando el contrato o el código te dejan.' },
+];
+
+const roles = [
+  { k: 'Para el CFO', d: 'Gasto de IA previsible, imputado a cada área y conciliado con las facturas.' },
+  { k: 'Para seguridad y riesgo', d: 'Datos sensibles bajo control, accesos con la identidad corporativa y todo auditado.' },
+  { k: 'Para tecnología', d: 'Una sola integración, cualquier modelo, respaldo automático y métricas para operar.' },
+  { k: 'Para la dirección', d: 'Una vista clara de quién adopta IA, cuánto cuesta y qué valor genera.' },
+];
 
 const pasos = [
-  { t: 'Una conversación', d: 'Nos contás qué proceso te preocupa o qué idea tenés dando vueltas.' },
-  { t: 'Entender el proceso', d: 'Miramos cómo se hace hoy, quién participa y qué sistemas toca.' },
-  { t: 'Definir el alcance', d: 'Acordamos qué se construye, quién es responsable y qué significa que salga bien.' },
-  { t: 'Una propuesta concreta', d: 'Te pasamos un proyecto con alcance claro. Si no tiene sentido avanzar, te lo decimos.' },
+  { t: 'Relevamiento', d: 'Mapeamos qué modelos se usan hoy, en qué equipos y aplicaciones, cuánto se gasta y qué datos salen.' },
+  { t: 'Diseño', d: 'Definimos proveedores, alias de modelos, presupuestos, roles, reglas de datos y dónde va a correr.' },
+  { t: 'Despliegue en tu nube', d: 'Lo instalamos en AWS, Google Cloud, Kubernetes o tu infraestructura, conectado a tu identidad y a tus proveedores.' },
+  { t: 'Migración y adopción', d: 'Pasamos las aplicaciones al gateway, armamos los tableros y capacitamos a los equipos que lo van a operar.' },
 ];
 
-const preguntas = [
-  '¿Qué tarea se repite todas las semanas y nadie quiere hacer?',
-  '¿Dónde se copia información a mano de un sistema a otro?',
-  '¿Qué decisión depende de un reporte que siempre llega tarde?',
+const faqs = [
+  { q: '¿Mis datos salen de la empresa?', a: 'El gateway corre en tu propia nube. Los datos solo van al proveedor de modelos que vos autorices, y las reglas de protección se aplican antes de que salgan.' },
+  { q: '¿Reemplaza a OpenAI, Anthropic o Google?', a: 'No. Se pone delante de ellos. Seguís usando los modelos que quieras, ahora con control centralizado y la libertad de cambiar.' },
+  { q: '¿Mis desarrolladores tienen que reescribir algo?', a: 'Casi nada. El gateway habla el mismo idioma que las APIs de OpenAI y Anthropic, así que alcanza con cambiar la dirección y la clave.' },
+  { q: '¿Y si ya tenemos un gateway o elegimos otro?', a: 'Somos agnósticos. Tenemos un gateway propio listo para producción, y si tu empresa ya eligió otra herramienta, trabajamos sobre esa.' },
+  { q: '¿Sirve para una empresa mediana?', a: 'Sí. Cuanto antes se ordena el uso de IA, más barato sale. El mismo gateway escala de un equipo a toda la compañía.' },
 ];
 
 const schema = {
-  '@type': 'ProfessionalService',
-  name: SITE.brand,
-  url: new URL('/ai-implementation', SITE.url).toString(),
+  '@type': 'Service',
+  name: 'AI Gateway',
+  serviceType: 'Implementación de AI Gateway',
+  provider: { '@type': 'Organization', name: SITE.brand, founder: { '@type': 'Person', name: SITE.fullName } },
   areaServed: 'Latin America',
-  founder: { '@type': 'Person', name: SITE.fullName, jobTitle: 'Ex Chief Data & AI Officer en Ualá' },
+  url: new URL('/ai-implementation', SITE.url).toString(),
 };
 ---
 <Base title={title} description={description} ogImage="/og-ai.png" siteName={SITE.brand} schema={schema}>
@@ -54,13 +76,14 @@ const schema = {
       <a class="mark" href="#top" aria-label="Guzzi AI, inicio de la sección">guzzi<span class="mark__ai">AI</span></a>
       <nav aria-label="Secciones">
         <ul class="nav__links">
-          <li><a href="#que-hacemos">Qué hacemos</a></li>
-          <li><a href="#como-empezamos">Cómo empezamos</a></li>
-          <li><a href="#quien-lidera">Quién lidera</a></li>
-          <li><a href="/">Pablo Guzzi</a></li>
+          <li><a href="#que-es">Qué es</a></li>
+          <li><a href="#que-permite">Qué permite</a></li>
+          <li><a href="#como">Cómo lo implementamos</a></li>
+          <li><a href="#preguntas">Preguntas</a></li>
+          <li><a href="/servicios">Otros servicios</a></li>
         </ul>
       </nav>
-      <a class="btn btn--sm" href={ctaHref} {...ext} data-cta="nav">Contanos tu caso</a>
+      <a class="btn btn--sm" href={ctaHref} {...ext} data-cta="gw-nav">Quiero mi gateway</a>
     </div>
   </header>
 
@@ -70,39 +93,32 @@ const schema = {
       <div class="glow glow--hero" aria-hidden="true"></div>
       <div class="wrap hero__grid">
         <div class="hero__copy">
-          <p class="eyebrow">IA aplicada a la operación</p>
-          <h1>Menos pilotos.<br />Más IA en <span class="hl">producción.</span></h1>
+          <p class="eyebrow">AI Gateway</p>
+          <h1>Toda la IA de tu empresa, <span class="hl">por una sola puerta.</span></h1>
           <p class="lede">
-            Automatizamos los procesos manuales de tu operación con IA: desde entender cómo trabaja tu equipo
-            hasta dejar la solución funcionando.
+            Implementamos un AI Gateway en tu nube: un único punto de entrada para que aplicaciones, equipos y
+            agentes usen cualquier modelo, con control de accesos, de costos y de datos.
           </p>
           <div class="actions">
-            <a class="btn btn--glow" href={ctaHref} {...ext} data-cta="hero">Contanos qué querés automatizar</a>
-            <a class="btn btn--ghost" href="#que-hacemos">Ver cómo trabajamos</a>
+            <a class="btn btn--glow" href={ctaHref} {...ext} data-cta="gw-hero">Quiero mi gateway</a>
+            <a class="btn btn--ghost" href="#que-es">Cómo funciona</a>
           </div>
-          <ul class="chips" aria-label="Qué incluye">
-            <li>Diagnóstico</li>
-            <li>Diseño</li>
-            <li>Construcción hands-on</li>
+          <ul class="chips" aria-label="Claves">
+            <li>Cualquier modelo</li>
+            <li>En tu nube</li>
+            <li>Con tu login corporativo</li>
           </ul>
         </div>
 
-        <figure class="flow" aria-label="Ejemplo de cómo avanza un proceso, de manual a automatizado">
-          <figcaption class="flow__cap">Ejemplo de recorrido</figcaption>
-          <ol class="flow__list">
-            <li class="flow__step">
-              <span class="flow__state">Proceso actual</span>
-              <span class="flow__text">Una persona arma la planilla a mano todos los lunes</span>
-            </li>
-            <li class="flow__step">
-              <span class="flow__state">Oportunidad</span>
-              <span class="flow__text">Los datos ya existen en tres sistemas; falta unirlos</span>
-            </li>
-            <li class="flow__step flow__step--live">
-              <span class="flow__state"><span class="dot" aria-hidden="true"></span>En producción</span>
-              <span class="flow__text">El reporte llega solo y alguien lo revisa en minutos</span>
-            </li>
-          </ol>
+        <figure class="gw" aria-label="Esquema: aplicaciones, agentes y personas pasan por el gateway antes de llegar a los proveedores de modelos">
+          <ul class="gw__row gw__row--src">{origenes.map((o) => <li>{o}</li>)}</ul>
+          <span class="gw__arrow" aria-hidden="true"></span>
+          <div class="gw__core">
+            <p class="gw__name"><span class="dot" aria-hidden="true"></span>AI Gateway</p>
+            <ol class="gw__checks">{controles.map((c) => <li>{c}</li>)}</ol>
+          </div>
+          <span class="gw__arrow" aria-hidden="true"></span>
+          <ul class="gw__row gw__row--dst">{destinos.map((d) => <li>{d}</li>)}</ul>
         </figure>
       </div>
 
@@ -110,79 +126,131 @@ const schema = {
         <p class="cred">
           <span>Liderado por <a href="/"><strong>Pablo Guzzi</strong></a></span>
           <span>Ex Chief Data &amp; AI Officer en Ualá (2021–2026)</span>
-          <span>15+ años liderando datos e IA</span>
+          <span>Ya implementado en una fintech a escala regional</span>
         </p>
       </div>
     </section>
 
-    <!-- PROBLEMA -->
-    <section class="section" aria-labelledby="problema-t">
+    <!-- QUÉ ES -->
+    <section class="section" id="que-es" aria-labelledby="que-es-t">
       <div class="wrap">
-        <p class="eyebrow">El problema</p>
-        <h2 id="problema-t">La IA ya llegó a tu empresa. <span class="hl">A la operación, todavía no.</span></h2>
-        <p class="intro">
-          Hay entusiasmo, hay herramientas y hay pruebas. Lo que suele faltar es que algo de eso cambie cómo
-          se trabaja el lunes a la mañana.
-        </p>
-        <ul class="cards cards--2">
-          {situaciones.map((s) => (
-            <li class="card">
-              <h3>{s.t}</h3>
-              <p>{s.d}</p>
-            </li>
+        <div class="split">
+          <div>
+            <p class="eyebrow">Qué es</p>
+            <h2 id="que-es-t">El plano de control de la <span class="hl">IA de tu empresa.</span></h2>
+          </div>
+          <p class="intro">
+            Hoy cada equipo se conecta por su cuenta a OpenAI, Anthropic o Google. El gateway se pone en el
+            medio: todas las llamadas pasan por él, y ahí se decide quién puede usar qué modelo, cuánto puede
+            gastar y qué datos pueden salir.
+          </p>
+        </div>
+        <div class="vs" role="table" aria-label="Sin gateway y con gateway">
+          <div class="vs__head" role="row">
+            <span role="columnheader">Sin gateway</span>
+            <span role="columnheader">Con AI Gateway</span>
+          </div>
+          {antesDespues.map((r) => (
+            <div class="vs__row" role="row">
+              <p class="vs__sin" role="cell">{r.sin}</p>
+              <p class="vs__con" role="cell">{r.con}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
 
-    <!-- FRASE -->
-    <section class="statement" aria-label="Dónde trabajamos">
+    <!-- POR QUÉ ES EL FUTURO -->
+    <section class="statement" aria-label="Por qué importa">
       <div class="wrap">
         <p>
-          Hablar de IA es fácil. Lo difícil es elegir el proceso correcto, integrarlo con los sistemas que ya
-          existen y lograr que el equipo lo adopte. <span class="hl">Ahí es donde trabajamos.</span>
+          Los modelos van a cambiar cada pocos meses. La forma en que tu empresa los gobierna
+          <span class="hl">no debería cambiar con ellos.</span>
         </p>
       </div>
     </section>
 
-    <!-- QUÉ HACEMOS -->
-    <section class="section grid-bg" id="que-hacemos" aria-labelledby="hacemos-t">
+    <section class="section section--panel" aria-labelledby="porque-t">
+      <div class="wrap">
+        <p class="eyebrow">Por qué ahora</p>
+        <h2 id="porque-t">El gateway es la base de la empresa <span class="hl">que usa IA en serio.</span></h2>
+        <div class="cards cards--3">
+          {porQue.map((p, i) => (
+            <article class="card card--bar">
+              <p class="kicker">{String(i + 1).padStart(2, '0')}</p>
+              <h3>{p.t}</h3>
+              <p>{p.d}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- QUÉ PERMITE -->
+    <section class="section grid-bg" id="que-permite" aria-labelledby="permite-t">
       <div class="glow glow--left" aria-hidden="true"></div>
       <div class="wrap">
         <div class="split">
           <div>
-            <p class="eyebrow">Qué hacemos</p>
-            <h2 id="hacemos-t">Del proceso manual a la <span class="hl">solución funcionando.</span></h2>
+            <p class="eyebrow">Qué te permite</p>
+            <h2 id="permite-t">Control total, <span class="hl">sin frenar a nadie.</span></h2>
           </div>
           <p class="intro">
-            Tres capacidades que se combinan según el caso. El foco está en lo último: que la automatización
-            quede andando dentro de la operación.
+            Los equipos siguen usando IA igual que hoy, o más. La diferencia es que ahora la empresa sabe qué
+            pasa, cuánto cuesta y puede decidir.
           </p>
         </div>
         <div class="cards cards--3">
           {capacidades.map((c) => (
             <article class="card card--bar">
+              <p class="kicker">{c.k}</p>
               <h3>{c.t}</h3>
               <p>{c.d}</p>
             </article>
           ))}
         </div>
-        <ul class="strip" aria-label="Formas de trabajo">
-          {formatos.map((f) => <li><span class="dot dot--static" aria-hidden="true"></span>{f}</li>)}
+        <ul class="roles">
+          {roles.map((r) => (
+            <li><strong>{r.k}</strong><span>{r.d}</span></li>
+          ))}
         </ul>
-        <p class="note">
-          Podemos trabajar en un proyecto acotado, con alcance y entregables claros, o con acompañamiento
-          continuo mientras la IA se vuelve parte de la operación. Si hace falta, también capacitamos al equipo
-          para que lo construido se use y se sostenga.
-        </p>
       </div>
     </section>
 
-    <!-- CÓMO EMPEZAMOS -->
-    <section class="section" id="como-empezamos" aria-labelledby="empezar-t">
+    <!-- CÓDIGO -->
+    <section class="section" aria-labelledby="codigo-t">
+      <div class="wrap split split--top">
+        <div>
+          <p class="eyebrow">Para tus desarrolladores</p>
+          <h2 id="codigo-t">Pasarse al gateway es <span class="hl">cambiar una línea.</span></h2>
+          <p class="intro">
+            El gateway habla el mismo idioma que las APIs de OpenAI y Anthropic. Las aplicaciones existentes
+            apuntan a una nueva dirección y siguen funcionando, con todos los controles activos.
+          </p>
+        </div>
+        <pre class="code" aria-label="Ejemplo de código"><code><span class="c">// antes: cada app con su clave del proveedor</span>
+<span class="k">const</span> client = <span class="k">new</span> OpenAI({'{'}
+  apiKey: <span class="s">"clave-real-del-proveedor"</span>,
+{'}'})
+
+<span class="c">// con el gateway</span>
+<span class="k">const</span> client = <span class="k">new</span> OpenAI({'{'}
+  baseURL: <span class="s">"https://ai.tuempresa.com/v1"</span>,
+  apiKey: <span class="s">"clave-del-equipo"</span>,
+{'}'})
+
+<span class="c">// "smart" lo define la empresa, no el código</span>
+client.chat.completions.create({'{'}
+  model: <span class="s">"smart"</span>, …
+{'}'})</code></pre>
+      </div>
+    </section>
+
+    <!-- CÓMO LO IMPLEMENTAMOS -->
+    <section class="section section--panel" id="como" aria-labelledby="como-t">
       <div class="wrap center">
-        <p class="eyebrow">Cómo empezamos</p>
-        <h2 id="empezar-t">Cómo suele <span class="hl">empezar.</span></h2>
+        <p class="eyebrow">Cómo lo implementamos</p>
+        <h2 id="como-t">De la foto actual al gateway <span class="hl">en producción.</span></h2>
       </div>
       <div class="wrap">
         <ol class="timeline">
@@ -195,57 +263,52 @@ const schema = {
             </li>
           ))}
         </ol>
-        <p class="aside">Cada empresa es distinta. Esto es un punto de partida, no un método cerrado.</p>
+        <p class="note note--center">
+          Somos agnósticos: tenemos un gateway propio listo para producción y, si tu empresa ya eligió otra
+          herramienta, trabajamos sobre esa. Después de la puesta en marcha podemos seguir operándolo con vos.
+        </p>
       </div>
     </section>
 
-    <!-- POR DÓNDE EMPEZAR -->
-    <section class="section section--panel" aria-labelledby="preguntas-t">
-      <div class="wrap split split--top">
-        <div>
-          <p class="eyebrow">Por dónde empezar</p>
-          <h2 id="preguntas-t">Tres preguntas para encontrar tu <span class="hl">primer caso.</span></h2>
-          <p class="intro">
-            No hace falta que llegues con el caso de uso definido. Si sabés qué parte de la operación consume
-            más horas o genera más errores, alcanza para empezar. Priorizar es parte del trabajo.
-          </p>
-        </div>
-        <ul class="checks">
-          {preguntas.map((q) => <li><span class="dot dot--static" aria-hidden="true"></span>{q}</li>)}
-        </ul>
-      </div>
-    </section>
-
-    <!-- QUIÉN LIDERA -->
+    <!-- EXPERIENCIA -->
     <section class="section" id="quien-lidera" aria-labelledby="lidera-t">
       <div class="wrap about">
         <div class="about__photo">
-          {SITE.hasPhoto ? (
-            <img src="/pablo.jpg" alt="Pablo Guzzi" width="480" height="480" loading="lazy" />
-          ) : (
-            <div class="placeholder" role="img" aria-label="Foto pendiente">
-              <span>[Foto de Pablo]</span>
-              <small>public/pablo.jpg + hasPhoto: true</small>
-            </div>
-          )}
+          <img src="/pablo.jpg" alt="Pablo Guzzi" width="480" height="480" />
         </div>
         <div class="about__text">
-          <p class="eyebrow">Quién lidera</p>
-          <h2 id="lidera-t">Detrás de Guzzi AI está <span class="hl">Pablo Guzzi.</span></h2>
+          <p class="eyebrow">Ya lo hicimos</p>
+          <h2 id="lidera-t">No es teoría: <span class="hl">lo operamos a escala.</span></h2>
           <p>
-            Fue Chief Data &amp; AI Officer en Ualá entre 2021 y 2026 y, antes, Chief Data &amp; Analytics
-            Officer en Naranja X. Lideró equipos de datos en YPF, Garbarino, Banco Comafi, DirecTV LatAm,
-            Red Link e INDEC.
+            Pablo Guzzi lideró la implementación de un gateway de IA en una fintech a escala regional, que se
+            convirtió en la base sobre la que se construyeron sus casos de IA en producción.
           </p>
           <p>
-            De esos años sale la convicción que guía cada proyecto: la IA genera valor cuando entra en la
-            operación de todos los días, no cuando se queda en una presentación. Pablo está en cada proyecto,
-            de la primera conversación a la puesta en producción.
+            Fue Chief Data &amp; AI Officer en Ualá entre 2021 y 2026 y, antes, Chief Data &amp; Analytics
+            Officer en Naranja X. Está en cada proyecto, de la primera conversación a la puesta en producción.
           </p>
           <div class="actions">
             <a class="btn btn--ghost" href="/">Conocer a Pablo</a>
-            {SITE.linkedinUrl && <a class="more" href={SITE.linkedinUrl} target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">→</span></a>}
+            <a class="more" href="/servicios">Ver todos los servicios <span aria-hidden="true">→</span></a>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREGUNTAS -->
+    <section class="section section--panel" id="preguntas" aria-labelledby="faq-t">
+      <div class="wrap split split--top">
+        <div>
+          <p class="eyebrow">Preguntas frecuentes</p>
+          <h2 id="faq-t">Lo que todos <span class="hl">nos preguntan.</span></h2>
+        </div>
+        <div class="faq">
+          {faqs.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
         </div>
       </div>
     </section>
@@ -255,16 +318,11 @@ const schema = {
       <div class="glow glow--final" aria-hidden="true"></div>
       <div class="wrap final__in">
         <p class="eyebrow">Contacto</p>
-        <h2 id="final-t">Contanos qué tarea se repite <span class="hl">todas las semanas</span> en tu equipo.</h2>
-        <p>Con dos líneas alcanza. Te respondemos personalmente y vemos si hay un proyecto que tenga sentido.</p>
+        <h2 id="final-t">Ordená la IA de tu empresa <span class="hl">antes de que escale.</span></h2>
+        <p>Contanos qué modelos usan hoy y en qué equipos. Te respondemos personalmente con una propuesta.</p>
         <div class="actions actions--center">
-          {SITE.formUrl ? (
-            <a class="btn btn--glow" href={SITE.formUrl} target="_blank" rel="noopener" data-cta="final">
-              Contanos qué querés automatizar
-            </a>
-          ) : (
-            <span class="pending">[Link del formulario pendiente]</span>
-          )}
+          <a class="btn btn--glow" href={ctaHref} {...ext} data-cta="gw-final">Quiero mi gateway</a>
+          <a class="btn btn--ghost" href="/servicios">Ver otros servicios</a>
         </div>
       </div>
     </section>
@@ -275,7 +333,7 @@ const schema = {
       <p><span class="mark mark--sm">guzzi<span class="mark__ai">AI</span></span></p>
       <p>Una iniciativa de <a href="/">{SITE.person}</a> y <a href="https://www.linkedin.com/in/dylanrosemberg/" target="_blank" rel="noopener">Dylan Rosemberg</a> · {SITE.city} · © {new Date().getFullYear()}</p>
       <p class="foot__legal">
-        Las empresas mencionadas describen la trayectoria profesional de Pablo Guzzi. Ninguna participa de esta propuesta ni la avala.
+        Las empresas mencionadas describen la trayectoria profesional de Pablo Guzzi. Ninguna participa de esta propuesta ni la avala. Las marcas de proveedores pertenecen a sus dueños.
       </p>
     </div>
   </footer>
