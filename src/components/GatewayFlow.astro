@@ -30,13 +30,21 @@ const pathCaos = caos.map(([a, p, k], i) => {
   const y1 = areas[a].y, y2 = provs[p].y;
   return { id: `c${i}`, d: `M${L} ${y1} C ${L + 110} ${y1 + k}, ${R - 110} ${y2 - k}, ${R} ${y2}`, dur: 2.4 + ((i * 7) % 10) / 10, begin: ((i * 3) % 11) / 5 };
 });
+// Avisos: rojos = datos que se escapan; ámbar = plata que se pierde.
 const leaks = [
-  { t: 'DNI', x: 300, y: 300, b: 0.4 },
-  { t: 'API key', x: 196, y: 92, b: 1.6 },
-  { t: '$ ?', x: 342, y: 120, b: 2.4 },
-  { t: 'CUIT', x: 236, y: 236, b: 3.2 },
-  { t: 'datos de clientes', x: 330, y: 352, b: 1.0 },
+  { t: 'API key', x: 196, y: 92, b: 1.6, k: 'data' },
+  { t: 'modelo caro para algo simple', x: 322, y: 112, b: 0.2, k: 'money' },
+  { t: 'DNI', x: 232, y: 228, b: 3.0, k: 'data' },
+  { t: 'la misma consulta, pagada 3 veces', x: 300, y: 282, b: 2.2, k: 'money' },
+  { t: 'datos de clientes', x: 330, y: 352, b: 0.9, k: 'data' },
 ];
+// Plata que se escurre de las conexiones.
+const drips = [
+  { x: 250, y: 70, b: 0 }, { x: 352, y: 160, b: 0.7 }, { x: 205, y: 196, b: 1.4 }, { x: 300, y: 214, b: 2.1 },
+  { x: 386, y: 250, b: 0.4 }, { x: 180, y: 300, b: 1.8 }, { x: 270, y: 150, b: 2.6 }, { x: 362, y: 330, b: 1.1 },
+];
+// Medidor de gasto.
+const MX = 8, MW = 544, MY = 404, TOPE = MX + MW * 0.72;
 
 // Orden: todo entra al gateway y sale ordenado. Las apps sin aprobar quedan bloqueadas.
 const pathIn = areas.map((a, i) => ({ id: `i${i}`, d: `M${L} ${a.y} C ${L + 50} ${a.y}, ${GX1 - 50} ${GY}, ${GX1} ${GY}` }));
@@ -49,8 +57,14 @@ const checks = ['Identidad', 'Presupuesto', 'Datos', 'Auditoría'];
     <button type="button" role="tab" data-to="orden" aria-selected="false">Con AI Gateway</button>
   </div>
 
-  <svg viewBox="0 0 560 376" role="img" aria-hidden="true">
+  <svg viewBox="0 0 560 446" role="img" aria-hidden="true">
     <defs>
+      <linearGradient id="gasto" gradientUnits="userSpaceOnUse" x1={MX} x2={MX + MW} y1="0" y2="0">
+        <stop offset="0" stop-color="#f5a524" />
+        <stop offset="0.7" stop-color="#f5a524" />
+        <stop offset="0.74" stop-color="#ff6b5a" />
+        <stop offset="1" stop-color="#ff6b5a" />
+      </linearGradient>
       {pathCaos.map((p) => <path id={p.id} d={p.d} />)}
       {pathIn.map((p) => <path id={p.id} d={p.d} />)}
       {pathOut.map((p) => <path id={p.id} d={p.d} />)}
@@ -64,8 +78,14 @@ const checks = ['Identidad', 'Presupuesto', 'Datos', 'Auditoría'];
           <animateMotion dur={`${p.dur}s`} begin={`${p.begin}s`} repeatCount="indefinite"><mpath href={`#${p.id}`} /></animateMotion>
         </circle>
       ))}
+      {drips.map((d) => (
+        <text class="drip" x={d.x} y={d.y} text-anchor="middle">$
+          <animateTransform attributeName="transform" type="translate" values="0 0; 0 34" dur="2.2s" begin={`${d.b}s`} repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0;0.95;0" keyTimes="0;0.25;1" dur="2.2s" begin={`${d.b}s`} repeatCount="indefinite" />
+        </text>
+      ))}
       {leaks.map((l) => (
-        <g class="leak" transform={`translate(${l.x} ${l.y})`}>
+        <g class={`leak leak--${l.k}`} transform={`translate(${l.x} ${l.y})`}>
           <text text-anchor="middle">{l.t}</text>
           <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.7;1" dur="4s" begin={`${l.b}s`} repeatCount="indefinite" />
         </g>
@@ -106,6 +126,26 @@ const checks = ['Identidad', 'Presupuesto', 'Datos', 'Auditoría'];
       </g>
     </g>
 
+    <!-- medidor de gasto -->
+    <g class="meter">
+      <text x={MX} y={MY - 12} class="meter__l">Gasto de IA</text>
+      <rect x={MX} y={MY} width={MW} height="10" rx="5" class="meter__track" />
+      <line x1={TOPE} x2={TOPE} y1={MY - 6} y2={MY + 16} class="meter__tope" />
+      <text x={TOPE} y={MY + 30} text-anchor="middle" class="meter__tl">presupuesto</text>
+      <g class="fx-caos">
+        <rect x={MX} y={MY} height="10" rx="5" class="meter__fill meter__fill--caos">
+          <animate attributeName="width" values={`${MW * 0.3};${MW};${MW}`} keyTimes="0;0.8;1" dur="6.5s" repeatCount="indefinite" />
+        </rect>
+        <text x={MX + MW} y={MY - 12} text-anchor="end" class="meter__r meter__r--caos">se pasa del presupuesto · nadie sabe de quién es</text>
+      </g>
+      <g class="fx-orden">
+        <rect x={MX} y={MY} height="10" rx="5" class="meter__fill meter__fill--ok">
+          <animate attributeName="width" values={`${MW * 0.5};${MW * 0.56};${MW * 0.5}`} dur="4s" repeatCount="indefinite" />
+        </rect>
+        <text x={MX + MW} y={MY - 12} text-anchor="end" class="meter__r meter__r--ok">dentro del presupuesto · imputado a cada área</text>
+      </g>
+    </g>
+
     <!-- nodos (comunes a los dos escenarios) -->
     {areas.map((a) => (
       <g class="node" transform={`translate(8 ${a.y - 17})`}>
@@ -123,14 +163,16 @@ const checks = ['Identidad', 'Presupuesto', 'Datos', 'Auditoría'];
 
   <figcaption class="flow-x__cap">
     <ul class="flow-x__facts fx-caos">
-      <li>Claves de proveedores copiadas en cualquier lado</li>
+      <li>Plata que se va sin que nadie la vea</li>
+      <li>Modelos caros para tareas simples</li>
+      <li>Cada área paga y resuelve lo mismo por separado</li>
       <li>Datos de clientes que salen sin revisar</li>
-      <li>Nadie sabe cuánto se gasta ni en qué</li>
     </ul>
     <ul class="flow-x__facts fx-orden">
-      <li>Un solo acceso, con el login de la empresa</li>
+      <li>Gasto con tope y con dueño en cada área</li>
+      <li>El modelo justo para cada tarea</li>
+      <li>Lo que ya se respondió no se vuelve a pagar</li>
       <li>Datos sensibles ocultos o bloqueados antes de salir</li>
-      <li>Cada consulta con su costo, su área y su registro</li>
     </ul>
   </figcaption>
 </figure>

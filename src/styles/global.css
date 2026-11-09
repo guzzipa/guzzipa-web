@@ -572,3 +572,14 @@
 .flow-x__facts.fx-orden li::before { background: var(--accent); }
 @media (max-width: 520px) { .flow-x__bar button { padding: 9px 12px; font-size: 0.82rem; } .flow-x__facts { display: grid; } }
 .flow-x svg { max-width: 880px; margin-inline: auto; }
+.flow-x .leak--money text { fill: #ffc46b; }
+.flow-x .drip { font: 800 15px var(--f-sans); fill: #f5a524; opacity: 0; }
+.flow-x .meter__l { font: 500 11px var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; fill: var(--fg-2); }
+.flow-x .meter__r { font: 500 11px var(--f-mono); }
+.flow-x .meter__r--caos { fill: #ff8a7a; }
+.flow-x .meter__r--ok { fill: var(--accent); }
+.flow-x .meter__track { fill: rgba(255,255,255,0.05); }
+.flow-x .meter__tope { stroke: var(--fg-2); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.flow-x .meter__tl { font: 500 10px var(--f-mono); fill: var(--fg-3); }
+.flow-x .meter__fill--caos { fill: url(#gasto); }
+.flow-x .meter__fill--ok { fill: var(--accent); }
