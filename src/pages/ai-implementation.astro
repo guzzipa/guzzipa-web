@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
+import GatewayFlow from '../components/GatewayFlow.astro';
 
 const title = 'Guzzi AI · AI Gateway para tu empresa';
 const description =
@@ -145,6 +146,7 @@ const schema = {
             gastar y qué datos pueden salir.
           </p>
         </div>
+        <GatewayFlow />
         <div class="vs" role="table" aria-label="Sin gateway y con gateway">
           <div class="vs__head" role="row">
             <span role="columnheader">Sin gateway</span>

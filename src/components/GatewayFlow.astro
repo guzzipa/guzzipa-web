@@ -1,0 +1,160 @@
+---
+// Animación "Hoy vs. Con gateway": cómo fluye la IA en una empresa sin control y con un AI Gateway.
+// SVG + SMIL (sin librerías). Alterna sola cada pocos segundos hasta que alguien toca un botón.
+
+const areas = [
+  { t: 'Marketing', y: 52 },
+  { t: 'Atención', y: 120 },
+  { t: 'Legales', y: 188 },
+  { t: 'Tecnología', y: 256 },
+  { t: 'Agentes', y: 324 },
+];
+const provs = [
+  { t: 'OpenAI', y: 70, ok: true },
+  { t: 'Anthropic', y: 150, ok: true },
+  { t: 'Google', y: 230, ok: true },
+  { t: 'Apps sin aprobar', y: 310, ok: false },
+];
+
+const L = 128; // borde derecho de las áreas
+const R = 432; // borde izquierdo de los proveedores
+const GX1 = 222, GX2 = 338, GY = 188; // gateway
+
+// Caos: cada área se conecta como puede, a varios proveedores, cruzándose.
+const caos: [number, number, number][] = [
+  // [área, proveedor, desvío]
+  [0, 0, 60], [0, 3, -40], [1, 1, -70], [1, 0, 90], [2, 3, 50],
+  [2, 2, -60], [3, 0, -90], [3, 2, 40], [3, 1, 70], [4, 1, -50], [4, 3, 30],
+];
+const pathCaos = caos.map(([a, p, k], i) => {
+  const y1 = areas[a].y, y2 = provs[p].y;
+  return { id: `c${i}`, d: `M${L} ${y1} C ${L + 110} ${y1 + k}, ${R - 110} ${y2 - k}, ${R} ${y2}`, dur: 2.4 + ((i * 7) % 10) / 10, begin: ((i * 3) % 11) / 5 };
+});
+const leaks = [
+  { t: 'DNI', x: 300, y: 300, b: 0.4 },
+  { t: 'API key', x: 196, y: 92, b: 1.6 },
+  { t: '$ ?', x: 342, y: 120, b: 2.4 },
+  { t: 'CUIT', x: 236, y: 236, b: 3.2 },
+  { t: 'datos de clientes', x: 330, y: 352, b: 1.0 },
+];
+
+// Orden: todo entra al gateway y sale ordenado. Las apps sin aprobar quedan bloqueadas.
+const pathIn = areas.map((a, i) => ({ id: `i${i}`, d: `M${L} ${a.y} C ${L + 50} ${a.y}, ${GX1 - 50} ${GY}, ${GX1} ${GY}` }));
+const pathOut = provs.map((p, i) => ({ id: `o${i}`, ok: p.ok, d: `M${GX2} ${GY} C ${GX2 + 50} ${GY}, ${R - 50} ${p.y}, ${R} ${p.y}` }));
+const checks = ['Identidad', 'Presupuesto', 'Datos', 'Auditoría'];
+---
+<figure class="flow-x" data-mode="caos" aria-label="Animación: sin gateway, cada área usa IA por su cuenta; con gateway, todo pasa por un único punto con controles">
+  <div class="flow-x__bar" role="tablist" aria-label="Elegí el escenario">
+    <button type="button" role="tab" data-to="caos" aria-selected="true">Hoy, sin gateway</button>
+    <button type="button" role="tab" data-to="orden" aria-selected="false">Con AI Gateway</button>
+  </div>
+
+  <svg viewBox="0 0 560 376" role="img" aria-hidden="true">
+    <defs>
+      {pathCaos.map((p) => <path id={p.id} d={p.d} />)}
+      {pathIn.map((p) => <path id={p.id} d={p.d} />)}
+      {pathOut.map((p) => <path id={p.id} d={p.d} />)}
+    </defs>
+
+    <!-- CAOS -->
+    <g class="fx-caos">
+      {pathCaos.map((p) => <use href={`#${p.id}`} class="ln ln--caos" />)}
+      {pathCaos.map((p) => (
+        <circle r="4" class="pk pk--caos">
+          <animateMotion dur={`${p.dur}s`} begin={`${p.begin}s`} repeatCount="indefinite"><mpath href={`#${p.id}`} /></animateMotion>
+        </circle>
+      ))}
+      {leaks.map((l) => (
+        <g class="leak" transform={`translate(${l.x} ${l.y})`}>
+          <text text-anchor="middle">{l.t}</text>
+          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.7;1" dur="4s" begin={`${l.b}s`} repeatCount="indefinite" />
+        </g>
+      ))}
+    </g>
+
+    <!-- ORDEN -->
+    <g class="fx-orden">
+      {pathIn.map((p) => <use href={`#${p.id}`} class="ln ln--ok" />)}
+      {pathOut.map((p) => <use href={`#${p.id}`} class={`ln ${p.ok ? 'ln--ok' : 'ln--off'}`} />)}
+      {pathIn.map((p, i) => (
+        <circle r="4" class="pk pk--ok">
+          <animateMotion dur="1.4s" begin={`${i * 0.55}s`} repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1" calcMode="linear"><mpath href={`#${p.id}`} /></animateMotion>
+        </circle>
+      ))}
+      {pathOut.filter((p) => p.ok).map((p, i) => (
+        <circle r="4" class="pk pk--ok">
+          <animateMotion dur="1.4s" begin={`${0.7 + i * 0.9}s`} repeatCount="indefinite"><mpath href={`#${p.id}`} /></animateMotion>
+        </circle>
+      ))}
+      <!-- bloqueo de apps sin aprobar -->
+      <g class="block" transform={`translate(${R - 24} ${provs[3].y - 18})`}>
+        <circle r="9" cx="0" cy="0" />
+        <path d="M-3.5 -3.5 L3.5 3.5 M3.5 -3.5 L-3.5 3.5" />
+      </g>
+      <!-- gateway -->
+      <g class="gwb">
+        <rect x={GX1} y={GY - 70} width={GX2 - GX1} height="140" rx="14" />
+        <text x={(GX1 + GX2) / 2} y={GY - 44} text-anchor="middle" class="gwb__t">AI Gateway</text>
+        {checks.map((c, i) => (
+          <g transform={`translate(${GX1 + 16} ${GY - 18 + i * 22})`}>
+            <circle r="3.5" cx="3" cy="-4" class="gwb__dot">
+              <animate attributeName="opacity" values="0.25;1;0.25" dur="2.4s" begin={`${i * 0.6}s`} repeatCount="indefinite" />
+            </circle>
+            <text x="14" y="0" class="gwb__c">{c}</text>
+          </g>
+        ))}
+      </g>
+    </g>
+
+    <!-- nodos (comunes a los dos escenarios) -->
+    {areas.map((a) => (
+      <g class="node" transform={`translate(8 ${a.y - 17})`}>
+        <rect width={L - 8} height="34" rx="17" />
+        <text x={(L - 8) / 2} y="22" text-anchor="middle">{a.t}</text>
+      </g>
+    ))}
+    {provs.map((p) => (
+      <g class={`node node--prov${p.ok ? '' : ' node--risk'}`} transform={`translate(${R} ${p.y - 17})`}>
+        <rect width="120" height="34" rx="17" />
+        <text x="60" y="22" text-anchor="middle">{p.t}</text>
+      </g>
+    ))}
+  </svg>
+
+  <figcaption class="flow-x__cap">
+    <ul class="flow-x__facts fx-caos">
+      <li>Claves de proveedores copiadas en cualquier lado</li>
+      <li>Datos de clientes que salen sin revisar</li>
+      <li>Nadie sabe cuánto se gasta ni en qué</li>
+    </ul>
+    <ul class="flow-x__facts fx-orden">
+      <li>Un solo acceso, con el login de la empresa</li>
+      <li>Datos sensibles ocultos o bloqueados antes de salir</li>
+      <li>Cada consulta con su costo, su área y su registro</li>
+    </ul>
+  </figcaption>
+</figure>
+
+<script is:inline>
+  (function () {
+    document.querySelectorAll('.flow-x').forEach(function (fig) {
+      var btns = fig.querySelectorAll('[data-to]');
+      var svg = fig.querySelector('svg');
+      var auto = true;
+      function set(mode) {
+        fig.setAttribute('data-mode', mode);
+        btns.forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-to') === mode)); });
+      }
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () { auto = false; set(b.getAttribute('data-to')); });
+      });
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (svg.pauseAnimations) svg.pauseAnimations();
+        return;
+      }
+      setInterval(function () {
+        if (auto) set(fig.getAttribute('data-mode') === 'caos' ? 'orden' : 'caos');
+      }, 6500);
+    });
+  })();
+</script>
