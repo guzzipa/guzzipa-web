@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
 import { catalogo, totalServicios } from '../data/servicios';
+import ServicePicker from '../components/ServicePicker.astro';
 
 const title = 'Servicios · Pablo Guzzi';
 const description =
@@ -32,7 +33,8 @@ const schema = {
       <a class="mark" href="/" aria-label="Pablo Guzzi, inicio">pablo guzzi</a>
       <nav aria-label="Grupos de servicios">
         <ul class="nav__links">
-          {catalogo.map((g) => <li><a href={`#${g.id}`}>{g.t}</a></li>)}
+          <li><a href="#top">Por situación</a></li>
+          <li><a href="#catalogo">Catálogo completo</a></li>
         </ul>
       </nav>
       <a class="btn btn--sm" href={contactHref} {...ext} data-cta="svc-nav">Hablemos</a>
@@ -44,56 +46,59 @@ const schema = {
       <div class="glow glow--hero" aria-hidden="true"></div>
       <div class="wrap">
         <p class="eyebrow">Servicios</p>
-        <h1 class="h1--name">Todo lo que puedo hacer <span class="hl">por tu empresa.</span></h1>
+        <h1 class="h1--name">Empezá por <span class="hl">tu situación.</span></h1>
         <p class="lede">
-          {totalServicios} servicios para llevar los datos y la IA de la estrategia a la operación. Salen de más
-          de 15 años liderando estas áreas, los últimos cinco como Chief Data &amp; AI Officer en Ualá.
+          Tengo {totalServicios} servicios para llevar los datos y la IA de la estrategia a la operación. Elegí lo
+          que más se parece a lo que te pasa y te muestro por dónde arrancar. Abajo está el catálogo completo.
         </p>
-        <ul class="svc-index" aria-label="Grupos">
-          {catalogo.map((g) => (
-            <li>
-              <a href={`#${g.id}`}>
-                <span class="kicker">{g.k}</span>
-                <strong>{g.t}</strong>
-                <span class="svc-index__n">{g.items[0].n}–{g.items[g.items.length - 1].n}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        <ServicePicker id="svc-pick" full />
       </div>
     </section>
 
-    {catalogo.map((g, gi) => (
-      <section class={`section${gi % 2 ? ' section--panel' : ''}`} id={g.id} aria-labelledby={`${g.id}-t`}>
-        <div class="wrap">
-          <div class="split">
-            <div>
-              <p class="eyebrow">{g.k}</p>
-              <h2 id={`${g.id}-t`}>{g.t}</h2>
-            </div>
-            <p class="intro">{g.d}</p>
+    <section class="section section--panel" id="catalogo" aria-labelledby="cat-t">
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Catálogo completo</p>
+            <h2 id="cat-t">Los {totalServicios} servicios, <span class="hl">por grupo.</span></h2>
           </div>
-          <div class="cards cards--2">
-            {g.items.map((s) => (
-              <article class={`card svc-card${s.href === '/ai-implementation' ? ' svc-card--feature' : ''}`} id={`s${s.n}`}>
-                <p class="svc-card__n">{s.n}</p>
-                <h3>{s.t}</h3>
-                <p>{s.d}</p>
-                <dl class="svc-card__meta">
-                  <div><dt>Para quién</dt><dd>{s.para}</dd></div>
-                  <div><dt>Qué te llevás</dt><dd>{s.out}</dd></div>
-                </dl>
-                {s.href ? (
-                  <a class="more" href={s.href} data-cta={`svc-${s.n}`}>{s.cta} <span aria-hidden="true">→</span></a>
-                ) : (
-                  <a class="more" href={contactHref} {...ext} data-cta={`svc-${s.n}`}>Consultar <span aria-hidden="true">→</span></a>
-                )}
-              </article>
-            ))}
-          </div>
+          <p class="intro">Filtrá por grupo y abrí cada servicio para ver para quién es y qué te llevás.</p>
         </div>
-      </section>
-    ))}
+        <div class="cat__filters" role="group" aria-label="Filtrar por grupo">
+          <button type="button" data-f="all" aria-pressed="true">Todos <span>{totalServicios}</span></button>
+          {catalogo.map((g) => (
+            <button type="button" data-f={g.id} aria-pressed="false">{g.t} <span>{g.items.length}</span></button>
+          ))}
+        </div>
+        <div class="cat">
+          {catalogo.map((g) => (
+            <div class="cat__group" data-g={g.id} id={g.id}>
+              <p class="cat__gt"><span class="kicker">{g.k}</span> {g.t}<span class="cat__gd">{g.d}</span></p>
+              {g.items.map((s) => (
+                <details class={`cat__item${s.href === '/ai-implementation' ? ' is-feature' : ''}`} id={`s${s.n}`}>
+                  <summary>
+                    <span class="cat__n">{s.n}</span>
+                    <span class="cat__t"><strong>{s.t}</strong><span>{s.d}</span></span>
+                    <span class="cat__x" aria-hidden="true"></span>
+                  </summary>
+                  <div class="cat__body">
+                    <dl class="svc-card__meta">
+                      <div><dt>Para quién</dt><dd>{s.para}</dd></div>
+                      <div><dt>Qué te llevás</dt><dd>{s.out}</dd></div>
+                    </dl>
+                    {s.href ? (
+                      <a class="btn btn--sm" href={s.href} data-cta={`svc-${s.n}`}>{s.cta}</a>
+                    ) : (
+                      <a class="more" href={contactHref} {...ext} data-cta={`svc-${s.n}`}>Consultar por este servicio <span aria-hidden="true">→</span></a>
+                    )}
+                  </div>
+                </details>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
 
     <section class="section" aria-labelledby="formatos-t">
       <div class="wrap">
@@ -134,4 +139,27 @@ const schema = {
       <p><a href="/">Inicio</a> · <a href="/prensa">Prensa y organizadores</a> · {SITE.city} · © {new Date().getFullYear()}</p>
     </div>
   </footer>
+  <script is:inline>
+    (function () {
+      var btns = document.querySelectorAll('[data-f]');
+      var groups = document.querySelectorAll('[data-g]');
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          var f = b.getAttribute('data-f');
+          btns.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+          groups.forEach(function (g) { g.hidden = f !== 'all' && g.getAttribute('data-g') !== f; });
+        });
+      });
+      function openHash() {
+        var el = location.hash && document.querySelector(location.hash);
+        if (!el) return;
+        if (el.tagName === 'DETAILS') { el.open = true; }
+        var g = el.closest('[data-g]');
+        if (g && g.hidden) { document.querySelector('[data-f="all"]').click(); }
+        setTimeout(function () { el.scrollIntoView({ block: 'start' }); }, 30);
+      }
+      window.addEventListener('hashchange', openHash);
+      openHash();
+    })();
+  </script>
 </Base>

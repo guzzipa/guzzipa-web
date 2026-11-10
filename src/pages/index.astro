@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
-import { catalogo, totalServicios } from '../data/servicios';
+import { totalServicios } from '../data/servicios';
+import ServicePicker from '../components/ServicePicker.astro';
 
 const title = 'Pablo Guzzi';
 const description =
@@ -52,17 +53,17 @@ const videos = [
 // Entrevistas y podcasts en canales de terceros (no están en el canal propio).
 const entrevistas = [
   { id: 'CgukQCGz6nc', t: 'De área reactiva a motor de negocio: cómo escalar Data', ev: 'TalentTalks #3 · TalentCross · 2026', dur: '24:14' },
-  { id: 'uhOK-lW65iA', t: 'Líder en IA: cómo adoptarla en el negocio', ev: 'Growth Rockstar · 2026', dur: '1:13:06' },
-  { id: 'xFQg2ETsvAQ', t: 'Generar impacto en Ualá como Chief Data & AI Officer', ev: 'teramot · 2026', dur: '57:19' },
-  { id: 'RUly08iHi4o', t: 'Cómo es trabajar en la cocina de los datos de un unicornio fintech', ev: 'IA sin Humo · Edvai · 2026', dur: '44:19' },
-  { id: '9tQG1bud6RQ', t: 'Axel desde el Polo, con el CDAO de Ualá', ev: 'ENE Polo Tecnológico · 2025', dur: '1:03:11' },
+  { id: 'uhOK-lW65iA', t: 'Líder en IA: cómo adoptarla en el negocio', ev: 'Growth Rockstar · 2026', dur: '1:13:06' , sp: '7Fmt16SpchHRaoAnhmNJ5R' },
+  { id: 'xFQg2ETsvAQ', t: 'Generar impacto en Ualá como Chief Data & AI Officer', ev: 'teramot · 2026', dur: '57:19' , sp: '3S5D1b3kweFOPer8srGMFa' },
+  { id: 'RUly08iHi4o', t: 'Cómo es trabajar en la cocina de los datos de un unicornio fintech', ev: 'IA sin Humo · Edvai · 2026', dur: '44:19' , sp: '1ARO263IaZr2OOu7djEokq' },
+  { id: '9tQG1bud6RQ', t: 'Axel desde el Polo, con el CDAO de Ualá', ev: 'ENE Polo Tecnológico · 2025', dur: '1:03:11' , sp: '7MfswqDcwz7to1tRJFAMbw' },
   { id: 'drWsubQdGes', t: 'Gestionar clientes con Business Analytics e IA', ev: 'Master Sounds · 2024', dur: '31:15' },
-  { id: 'MOkcu0i-TpM', t: 'Transformar las finanzas con tecnología', ev: 'Sin letra chica · Ualá · 2023', dur: '22:48' },
+  { id: 'MOkcu0i-TpM', t: 'Transformar las finanzas con tecnología', ev: 'Sin letra chica · Ualá · 2023', dur: '22:48' , sp: '2YRRvDWR9nkiG0V66gXdZl' },
   { id: 'nZ26dmdCrx4', t: 'Del relato a los datos', ev: 'Work&Coffee · Morph Global · 2022', dur: '35:23' },
 ];
 
 const podcasts = [
-  { show: 'Podcast para CEOs', t: 'Caso Ualá: la fintech que se convirtió en unicornio', y: '2023', href: 'https://podcasts.apple.com/us/podcast/11-caso-ual%C3%A1-pablo-guzzi-chief-data-analytics-officer/id1691585938?i=1000623266598' },
+  { show: 'Podcast para CEOs', t: 'Caso Ualá: la fintech que se convirtió en unicornio', y: '2023', href: 'https://open.spotify.com/episode/65PfRIqVyGzqOT2pNnmkx4' },
   { show: 'Inteligencia Colectiva', t: '¿Cómo entender a sus clientes mediante datos?', y: '2022', href: 'https://open.spotify.com/episode/46VmpQVbR42fsqx1BqnTrc' },
 ];
 
@@ -73,7 +74,7 @@ const stats = [
   { n: '2012', t: 'desde que doy clases' },
 ];
 
-const escenarios = ['CDO LATAM Summit', 'Congreso CDO LATAM · Bogotá', 'CMS Fin & Pay Latam Forum', 'AIFI-25', 'Seminarium Summit Data & AI', 'FAMAF', 'Coderhouse TalentWeek', 'Growth Rockstar', 'IA sin Humo', 'teramot', 'TalentCross'];
+const escenarios = ['AI Weekend Buenos Aires', 'CDO LATAM Summit', 'Congreso CDO LATAM · Bogotá', 'CMS Fin & Pay Latam Forum', 'AIFI-25', 'Seminarium Summit Data & AI', 'FAMAF', 'Coderhouse TalentWeek', 'Growth Rockstar', 'IA sin Humo', 'teramot', 'TalentCross'];
 
 const recomendaciones = [
   {
@@ -210,36 +211,11 @@ const schema = {
             <h2 id="serv-t">De la estrategia a la IA <span class="hl">funcionando.</span></h2>
           </div>
           <p class="intro">
-            {totalServicios} servicios en cinco grupos. Podés tomar uno solo o combinarlos: decidir, construir,
-            liderar, acompañar y formar.
+            {totalServicios} servicios para decidir, construir, liderar, acompañar y formar. Para no marearte,
+            empezá por tu situación y te muestro por dónde arrancar.
           </p>
         </div>
-        <div class="svc">
-          {catalogo.map((g) => (
-            <article class="svc__group">
-              <header class="svc__head">
-                <p class="kicker">{g.k}</p>
-                <h3>{g.t}</h3>
-                <p>{g.d}</p>
-              </header>
-              <ol class="svc__list">
-                {g.items.map((s) => (
-                  <li>
-                    <a href={s.href ?? `/servicios#s${s.n}`} class={s.href === '/ai-implementation' ? 'is-feature' : undefined} data-cta={`home-svc-${s.n}`}>
-                      <span class="svc__n">{s.n}</span>
-                      <span class="svc__t">{s.t}</span>
-                      <span class="svc__go" aria-hidden="true">→</span>
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </article>
-          ))}
-        </div>
-        <div class="actions actions--gap">
-          <a class="btn btn--ghost" href="/servicios">Ver todos los servicios en detalle</a>
-          <a class="more" href={contactHref} {...ext} data-cta="home-svc">Si no sabés por cuál empezar, hablemos <span aria-hidden="true">→</span></a>
-        </div>
+        <ServicePicker id="home-pick" />
       </div>
     </section>
 
@@ -400,6 +376,9 @@ const schema = {
                   <span class="video__t">{v.t}</span>
                 </span>
               </a>
+              {v.sp && (
+                <a class="video__alt" href={`https://open.spotify.com/episode/${v.sp}`} target="_blank" rel="noopener" data-cta={`spotify-${v.sp}`}>Escuchar en Spotify <span aria-hidden="true">↗</span></a>
+              )}
             </li>
           ))}
         </ul>

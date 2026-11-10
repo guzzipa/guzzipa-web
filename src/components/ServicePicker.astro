@@ -1,0 +1,64 @@
+---
+import { SITE } from '../config';
+import { situacionesResueltas, totalServicios } from '../data/servicios';
+interface Props { id?: string; full?: boolean }
+const { id = 'picker', full = false } = Astro.props;
+const contactHref = SITE.formUrl || '/#contacto';
+---
+<div class="pick" data-pick>
+  <p class="pick__label" id={`${id}-l`}>Elegí la frase que más se parece a tu situación</p>
+  <div class="pick__opts" role="tablist" aria-labelledby={`${id}-l`}>
+    {situacionesResueltas.map((x, i) => (
+      <button type="button" role="tab" id={`${id}-t${i}`} aria-controls={`${id}-p${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+        {x.t}
+      </button>
+    ))}
+  </div>
+  {situacionesResueltas.map((x, i) => (
+    <div class="pick__panel" role="tabpanel" id={`${id}-p${i}`} aria-labelledby={`${id}-t${i}`} hidden={i !== 0}>
+      <p class="pick__d">{x.d}</p>
+      <ol class="pick__recs">
+        {x.items.map((s) => (
+          <li>
+            <a href={s.href ?? `/servicios#s${s.n}`} class={s.href === '/ai-implementation' ? 'is-feature' : undefined} data-cta={`pick-${s.n}`}>
+              <span class="pick__n">{s.n}</span>
+              <span class="pick__g">{s.grupo}</span>
+              <strong>{s.t}</strong>
+              <span class="pick__sd">{s.d}</span>
+              <span class="pick__go">{s.href ? s.cta : 'Ver detalle'} <span aria-hidden="true">→</span></span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  ))}
+  <div class="pick__foot">
+    {!full && <a class="btn btn--ghost" href="/servicios">Ver los {totalServicios} servicios</a>}
+    <a class="more" href={contactHref} target={SITE.formUrl ? '_blank' : undefined} rel="noopener" data-cta={`${id}-contacto`}>Si no te ves en ninguna, contame tu caso <span aria-hidden="true">→</span></a>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    document.querySelectorAll('[data-pick]').forEach(function (root) {
+      if (root.dataset.ready) return; root.dataset.ready = '1';
+      var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+      function show(i, focus) {
+        tabs.forEach(function (t, j) {
+          var on = i === j;
+          t.setAttribute('aria-selected', String(on));
+          t.tabIndex = on ? 0 : -1;
+          document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+        });
+        if (focus) tabs[i].focus();
+      }
+      tabs.forEach(function (t, i) {
+        t.addEventListener('click', function () { show(i); });
+        t.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); show((i + 1) % tabs.length, true); }
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); show((i - 1 + tabs.length) % tabs.length, true); }
+        });
+      });
+    });
+  })();
+</script>
