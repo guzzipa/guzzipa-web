@@ -20,7 +20,7 @@ export const SITE = {
   linkedinUrl: 'https://www.linkedin.com/in/pablo-a-guzzi/',
 
   // Canal de YouTube con charlas.
-  youtubeUrl: 'https://www.youtube.com/@guzzipa',
+  youtubeUrl: '', // canal oculto a pedido; los videos se muestran en "Charlas completas en video"
 
   // Foto: public/pablo.jpg (cuadrada) y public/pablo-full.jpg (retrato vertical).
   hasPhoto: true,
