@@ -59,13 +59,11 @@ const entrevistas = [
   { id: '9tQG1bud6RQ', t: 'Axel desde el Polo, con el CDAO de Ualá', ev: 'ENE Polo Tecnológico · 2025', dur: '1:03:11' , sp: '7MfswqDcwz7to1tRJFAMbw' },
   { id: 'drWsubQdGes', t: 'Gestionar clientes con Business Analytics e IA', ev: 'Master Sounds · 2024', dur: '31:15' },
   { id: 'MOkcu0i-TpM', t: 'Transformar las finanzas con tecnología', ev: 'Sin letra chica · Ualá · 2023', dur: '22:48' , sp: '2YRRvDWR9nkiG0V66gXdZl' },
+  { audio: true, show: 'Podcast para CEOs', t: 'Caso Ualá: la fintech que se convirtió en unicornio', ev: 'Podcast para CEOs · 2023', href: 'https://open.spotify.com/episode/65PfRIqVyGzqOT2pNnmkx4', g: 'implementacion' },
   { id: 'nZ26dmdCrx4', t: 'Del relato a los datos', ev: 'Work&Coffee · Morph Global · 2022', dur: '35:23' },
+  { audio: true, show: 'Inteligencia Colectiva', t: '¿Cómo entender a sus clientes mediante datos?', ev: 'Inteligencia Colectiva · 2022', href: 'https://open.spotify.com/episode/46VmpQVbR42fsqx1BqnTrc', g: 'mentoria' },
 ];
 
-const podcasts = [
-  { show: 'Podcast para CEOs', t: 'Caso Ualá: la fintech que se convirtió en unicornio', y: '2023', href: 'https://open.spotify.com/episode/65PfRIqVyGzqOT2pNnmkx4' },
-  { show: 'Inteligencia Colectiva', t: '¿Cómo entender a sus clientes mediante datos?', y: '2022', href: 'https://open.spotify.com/episode/46VmpQVbR42fsqx1BqnTrc' },
-];
 
 const stats = [
   { n: '15+', t: 'años liderando datos e IA' },
@@ -78,16 +76,19 @@ const escenarios = ['AI Weekend Buenos Aires', 'CDO LATAM Summit', 'Congreso CDO
 
 const recomendaciones = [
   {
+    h: 'Es, sin exagerar, la persona más influyente que conocí en el mundo de Data & AI en la región.',
     q: 'No llegó a optimizar un área de datos, llegó a crear una que hoy es referencia. Bajo su liderazgo pusimos en producción un scoring crediticio alternativo, un chatbot de atención al cliente y modelos de lifetime value que predicen desde el día 1 de vida del usuario.',
     n: 'Nicolás Dagosta',
     r: 'Head of Data & AI en Ualá · le reportó durante cinco años',
   },
   {
+    h: 'Me gustaría volver a trabajar con él en cualquier proyecto en el que esté involucrado, y no es algo que me pase con mucha gente.',
     q: 'Construyó un equipo increíble, tanto en lo humano como en lo profesional, y tuvo un rol central en transformar la manera en que toda Ualá consume y utiliza datos para tomar decisiones.',
     n: 'Gabriel Miadosqui',
     r: 'Data & AI Advisor · le reportó en Ualá',
   },
   {
+    h: 'Siempre encuentra soluciones siguiendo estrategias robustas.',
     q: 'Puedo hablar de la capacidad de Pablo para entender el negocio y ofrecer soluciones con impacto significativo.',
     n: 'Susana Bergero',
     r: 'Directora en Naranja X · fue su líder directa',
@@ -268,13 +269,31 @@ const schema = {
             lideraron.
           </p>
         </div>
-        <div class="cards cards--3">
-          {recomendaciones.map((r) => (
-            <figure class="card quote">
-              <blockquote><p>“{r.q}”</p></blockquote>
-              <figcaption><strong>{r.n}</strong><span>{r.r}</span></figcaption>
+        <div class="recs">
+          {recomendaciones.slice(0, 1).map((r) => (
+            <figure class="recs__main">
+              <span class="recs__mark" aria-hidden="true">“</span>
+              <blockquote>
+                <p class="recs__h">{r.h}</p>
+                <p class="recs__q">{r.q}</p>
+              </blockquote>
+              <figcaption class="recs__who">
+                <span class="recs__av g-implementacion" aria-hidden="true">{r.n.split(' ').map((w) => w[0]).join('')}</span>
+                <span><strong>{r.n}</strong><span>{r.r}</span></span>
+              </figcaption>
             </figure>
           ))}
+          <div class="recs__side">
+            {recomendaciones.slice(1).map((r, i) => (
+              <figure class="recs__card">
+                <blockquote><p>“{r.h}”</p></blockquote>
+                <figcaption class="recs__who">
+                  <span class={`recs__av ${i === 0 ? 'g-liderazgo' : 'g-mentoria'}`} aria-hidden="true">{r.n.split(' ').map((w) => w[0]).join('')}</span>
+                  <span><strong>{r.n}</strong><span>{r.r}</span></span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
         <a class="more more--block" href={recsUrl} target="_blank" rel="noopener" data-cta="home-recs">Ver las 15 recomendaciones en LinkedIn <span aria-hidden="true">→</span></a>
       </div>
@@ -365,12 +384,23 @@ const schema = {
         <ul class="videos__list">
           {entrevistas.map((v) => (
             <li>
-              <a class="video" href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener" data-cta={`entrevista-${v.id}`}>
-                <span class="video__thumb">
-                  <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" loading="lazy" onerror="this.remove()" />
-                  <span class="video__play" aria-hidden="true"></span>
-                  <span class="video__dur">{v.dur}</span>
-                </span>
+              <a class="video" href={v.audio ? v.href : `https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener" data-cta={`entrevista-${v.id ?? v.show}`}>
+                {v.audio ? (
+                  <span class={`video__thumb video__thumb--audio g-${v.g}`}>
+                    <span class="aud__show">{v.show}</span>
+                    <svg class="aud__wave" viewBox="0 0 120 32" aria-hidden="true">
+                      {[8,18,12,26,16,30,10,22,14,28,9,20,24,12,18,6,16,26,11,20].map((h, k) => <rect x={k * 6} y={(32 - h) / 2} width="3" height={h} rx="1.5" />)}
+                    </svg>
+                    <span class="video__play" aria-hidden="true"></span>
+                    <span class="video__dur">Podcast</span>
+                  </span>
+                ) : (
+                  <span class="video__thumb">
+                    <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" loading="lazy" onerror="this.remove()" />
+                    <span class="video__play" aria-hidden="true"></span>
+                    <span class="video__dur">{v.dur}</span>
+                  </span>
+                )}
                 <span class="video__body">
                   <span class="kicker">{v.ev}</span>
                   <span class="video__t">{v.t}</span>
@@ -383,16 +413,6 @@ const schema = {
           ))}
         </ul>
         </div>
-        <h3 class="subhead">Solo audio</h3>
-        <ol class="rows rows--quiet">
-          {podcasts.map((p) => (
-            <li class="row">
-              <span class="row__y">{p.y}</span>
-              <span class="row__org">{p.show}</span>
-              <span class="row__t"><a class="more" href={p.href} target="_blank" rel="noopener">{p.t} <span aria-hidden="true">→</span></a></span>
-            </li>
-          ))}
-        </ol>
       </div>
     </section>
 

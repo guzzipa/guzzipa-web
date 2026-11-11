@@ -170,3 +170,10 @@ html:has(body.theme-light) { background: #faf8f4; }
 .theme-light #charlas .kicker, .theme-light #charlas .card--bar::before { color: var(--c-rojo); }
 .theme-light #charlas .card--bar::before { background: var(--c-rojo); }
 .theme-light #docencia .kicker, .theme-light #docencia .row__y { color: var(--c-verde); }
+.theme-light .band .g-implementacion { --gc: #5cbf8a; }
+.theme-light .band .g-liderazgo { --gc: #e0ae3c; }
+.theme-light .band .g-mentoria { --gc: #e5776a; }
+.theme-light .band .recs__av { color: #15171a; }
+.theme-light .video__thumb--audio { background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--gc) 45%, transparent), transparent 60%), #1d1f22; }
+.theme-light .video__thumb--audio.g-implementacion { --gc: #3fae74; }
+.theme-light .video__thumb--audio.g-mentoria { --gc: #e5776a; }

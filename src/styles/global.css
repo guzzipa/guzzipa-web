@@ -682,3 +682,28 @@
 .pick__opts button { display: grid; gap: 3px; }
 .pick__opts button strong { font-size: 1rem; font-weight: 700; color: var(--fg); }
 .pick__opts button span { font-size: 0.8rem; font-weight: 400; color: var(--fg-3); line-height: 1.35; }
+
+/* ---- Recomendaciones: una cita protagonista y dos de apoyo ---- */
+.recs { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; margin-top: clamp(32px, 4vw, 48px); }
+@media (max-width: 900px) { .recs { grid-template-columns: minmax(0, 1fr); } }
+.recs__main { position: relative; margin: 0; display: grid; align-content: space-between; gap: 28px; padding: clamp(26px, 4vw, 44px); border-radius: 20px; background: var(--card); border: 1px solid var(--line); overflow: hidden; }
+.recs__mark { position: absolute; top: -0.12em; right: 0.18em; font: 800 clamp(9rem, 6rem + 8vw, 15rem)/1 var(--f-sans); color: var(--accent); opacity: 0.14; pointer-events: none; }
+.recs__main blockquote { margin: 0; display: grid; gap: 18px; }
+.recs__h { font: 700 clamp(1.45rem, 1.05rem + 1.6vw, 2.15rem)/1.22 var(--f-sans); letter-spacing: -0.03em; color: var(--fg); max-width: 22em; }
+.recs__q { color: var(--fg-2); font-size: 1rem; max-width: 38em; }
+.recs__side { display: grid; gap: 16px; }
+.recs__card { margin: 0; display: grid; align-content: space-between; gap: 20px; padding: 24px 26px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); }
+.recs__card blockquote { margin: 0; }
+.recs__card p { font: 600 1.12rem/1.4 var(--f-sans); letter-spacing: -0.01em; color: var(--fg); }
+.recs__who { display: flex; align-items: center; gap: 12px; }
+.recs__who > span:last-child { display: grid; gap: 3px; }
+.recs__who strong { font-weight: 700; }
+.recs__who > span:last-child > span { font: 500 0.66rem/1.35 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); }
+.recs__av { width: 42px; height: 42px; flex: none; display: grid; place-items: center; border-radius: 50%; font: 700 0.9rem/1 var(--f-sans); color: #fff; background: var(--gc, var(--accent)); }
+
+/* Miniatura generada para podcasts solo audio */
+.video__thumb--audio { --gc: var(--accent); background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--gc) 45%, transparent), transparent 60%), #1d1f22; border-color: transparent; }
+.aud__show { position: absolute; left: 10px; top: 9px; right: 10px; font: 700 0.78rem/1.2 var(--f-sans); color: #f3f1ec; letter-spacing: -0.01em; }
+.aud__wave { position: absolute; left: 10px; right: 10px; bottom: 9px; width: calc(100% - 70px); height: 22%; fill: color-mix(in srgb, var(--gc) 80%, white); opacity: 0.9; }
+.video__thumb--audio .video__play { width: 38px; height: 38px; }
+.video__thumb--audio .video__play::after { left: 14px; top: 11px; border-left-width: 12px; border-top-width: 8px; border-bottom-width: 8px; }
