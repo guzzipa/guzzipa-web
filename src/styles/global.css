@@ -679,3 +679,6 @@
   .smap__grid > :nth-last-child(-n+4) { border-bottom: 1px solid var(--line); }
   .smap__grid > :last-child { border-bottom: 0; }
 }
+.pick__opts button { display: grid; gap: 3px; }
+.pick__opts button strong { font-size: 1rem; font-weight: 700; color: var(--fg); }
+.pick__opts button span { font-size: 0.8rem; font-weight: 400; color: var(--fg-3); line-height: 1.35; }

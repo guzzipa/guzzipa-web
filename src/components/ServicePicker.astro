@@ -2,15 +2,16 @@
 import { SITE } from '../config';
 import { situacionesResueltas, totalServicios } from '../data/servicios';
 interface Props { id?: string; full?: boolean; label?: string }
-const { id = 'picker', full = false, label = 'Elegí la frase que más se parece a tu situación' } = Astro.props;
+const { id = 'picker', full = false, label = 'Elegí tu situación' } = Astro.props;
 const contactHref = SITE.formUrl || '/#contacto';
 ---
 <div class="pick" data-pick>
   <p class="pick__label" id={`${id}-l`}>{label}</p>
   <div class="pick__opts" role="tablist" aria-labelledby={`${id}-l`}>
     {situacionesResueltas.map((x, i) => (
-      <button type="button" role="tab" id={`${id}-t${i}`} aria-controls={`${id}-p${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
-        {x.t}
+      <button type="button" role="tab" class={`g-${x.g}`} id={`${id}-t${i}`} aria-controls={`${id}-p${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+        <strong>{x.k}</strong>
+        <span>{x.t}</span>
       </button>
     ))}
   </div>

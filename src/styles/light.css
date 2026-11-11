@@ -145,3 +145,28 @@ html:has(body.theme-light) { background: #faf8f4; }
 @media (max-width: 860px) { .theme-light .smap__row { background: var(--bg-2); } }
 .theme-light .cat__filters button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
 .theme-light .g__cap { color: #f3f1ec; }
+
+/* Selector: cada situación toma el color de su grupo principal */
+.theme-light .pick__opts button { padding: 12px 16px; }
+.theme-light .pick__opts button::before { content: none; }
+.theme-light .pick__opts button[aria-selected="true"] {
+  border-color: color-mix(in srgb, var(--gc, var(--accent)) 45%, transparent);
+  background: color-mix(in srgb, var(--gc, var(--accent)) 7%, var(--card));
+  box-shadow: inset 3px 0 0 var(--gc, var(--accent));
+}
+.theme-light .pick__opts button[aria-selected="true"] strong { color: var(--gc, var(--accent)); }
+
+/* Palabra destacada de cada título: un color por sección, sin repetirse seguidos */
+.theme-light { --c-amarillo-txt: #a87402; }
+.theme-light #servicios .hl, .theme-light #mapa .hl, .theme-light #docencia .hl, .theme-light #bio .hl { color: var(--c-verde); }
+.theme-light #trayectoria .hl, .theme-light #catalogo .hl, .theme-light #contenido-linkedin .hl, .theme-light #fotos .hl { color: var(--c-amarillo-txt); }
+.theme-light #charlas .hl, .theme-light section[aria-labelledby="formatos-t"] .hl, .theme-light #temas .hl { color: var(--c-rojo); }
+.theme-light #entrevistas .hl { color: var(--c-azul); }
+.theme-light #servicios .eyebrow, .theme-light #mapa .eyebrow, .theme-light #docencia .eyebrow { color: var(--c-verde); }
+.theme-light #trayectoria .eyebrow, .theme-light #catalogo .eyebrow, .theme-light #contenido-linkedin .eyebrow { color: var(--c-amarillo-txt); }
+.theme-light #charlas .eyebrow, .theme-light section[aria-labelledby="formatos-t"] .eyebrow { color: var(--c-rojo); }
+.theme-light #entrevistas .eyebrow, .theme-light #top .eyebrow { color: var(--c-azul); }
+.theme-light #trayectoria .row__y { color: var(--c-amarillo-txt); }
+.theme-light #charlas .kicker, .theme-light #charlas .card--bar::before { color: var(--c-rojo); }
+.theme-light #charlas .card--bar::before { background: var(--c-rojo); }
+.theme-light #docencia .kicker, .theme-light #docencia .row__y { color: var(--c-verde); }

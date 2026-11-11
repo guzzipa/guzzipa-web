@@ -262,36 +262,50 @@ export const totalServicios = n;
 // Situaciones para el selector guiado: cada una recomienda 2 o 3 servicios (por nombre exacto).
 export const situaciones = [
   {
+    k: 'Por dónde empezar',
+    g: 'estrategia',
     t: 'Quiero saber por dónde empezar con IA',
     d: 'Primero una foto honesta de dónde estás, después un plan con prioridades claras.',
     s: ['Diagnóstico de madurez de datos e IA', 'Estrategia y hoja de ruta de IA', 'Priorización de casos de uso'],
   },
   {
+    k: 'IA sin control',
+    g: 'implementacion',
     t: 'Cada área usa IA por su cuenta',
     d: 'Ordenar accesos, costos y datos antes de que el uso escale, sin frenar a nadie.',
     s: ['AI Gateway', 'Gobierno de datos y de IA', 'Alfabetización en IA para toda la empresa'],
   },
   {
+    k: 'Automatizar procesos',
+    g: 'implementacion',
     t: 'Tengo procesos que quiero automatizar',
     d: 'Elegir bien qué automatizar y llevarlo a producción, integrado a tus sistemas.',
     s: ['Automatizaciones y agentes de IA', 'Asistentes de atención al cliente', 'Priorización de casos de uso'],
   },
   {
+    k: 'Datos de clientes',
+    g: 'implementacion',
     t: 'Quiero sacarle más valor a los datos de mis clientes',
     d: 'Modelos y plataforma para decidir mejor en crédito, marketing y retención.',
     s: ['Modelos de valor de cliente', 'Scoring de riesgo y crédito alternativo', 'Plataforma de datos y analítica self-service'],
   },
   {
+    k: 'Liderazgo',
+    g: 'liderazgo',
     t: 'Necesito a alguien que lidere datos e IA',
     d: 'Liderazgo con experiencia, a tiempo parcial o como segunda opinión en la mesa.',
     s: ['Fractional CDO / CAIO', 'Armado de equipos de datos e IA', 'Advisory para CEOs y directorios'],
   },
   {
+    k: 'Crecer como líder',
+    g: 'mentoria',
     t: 'Quiero crecer como líder de datos o IA',
     d: 'Acompañamiento de alguien que ya recorrió el camino.',
     s: ['Mentoría 1:1 para líderes de datos e IA', 'Mentoría a equipos de liderazgo'],
   },
   {
+    k: 'Formación y charlas',
+    g: 'formacion',
     t: 'Quiero formar a mi equipo o sumar una charla',
     d: 'Desde un workshop para directivos hasta una keynote para tu evento.',
     s: ['Workshops de IA para líderes', 'Alfabetización en IA para toda la empresa', 'Keynotes y charlas'],
