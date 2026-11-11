@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
 import { catalogo, totalServicios } from '../data/servicios';
 import ServicePicker from '../components/ServicePicker.astro';
-import Recomendador from '../components/Recomendador.astro';
 import ServiceMap from '../components/ServiceMap.astro';
 
 const title = 'Servicios · Pablo Guzzi';
@@ -51,11 +50,10 @@ const schema = {
         <p class="eyebrow">Servicios</p>
         <h1 class="h1--name">Empezá por <span class="hl">tu situación.</span></h1>
         <p class="lede">
-          Tengo {totalServicios} servicios para llevar los datos y la IA de la estrategia a la operación. Contame qué
-          te pasa, por escrito o en audio, y te muestro por dónde arrancar. Abajo está el catálogo completo.
+          Tengo {totalServicios} servicios para llevar los datos y la IA de la estrategia a la operación. Elegí lo
+          que más se parece a lo que te pasa y te muestro por dónde arrancar. Abajo está el catálogo completo.
         </p>
-        <Recomendador id="svc-rec" />
-        <ServicePicker id="svc-pick" full label="O elegí la frase que más se parece a tu situación" />
+        <ServicePicker id="svc-pick" full />
       </div>
     </section>
 

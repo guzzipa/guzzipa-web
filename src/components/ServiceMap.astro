@@ -1,6 +1,6 @@
 ---
 // Mapa de servicios: filas = dónde operan en la empresa, columnas = en qué momento.
-// Se ilumina con el selector por situación y con el asistente (evento 'svc:highlight').
+// Se ilumina con el selector por situación (evento 'svc:highlight').
 import { catalogo, ejesDonde, ejesCuando } from '../data/servicios';
 const items = catalogo.flatMap((g) => g.items.map((s) => ({ ...s, grupo: g.t })));
 ---
@@ -39,7 +39,7 @@ const items = catalogo.flatMap((g) => g.items.map((s) => ({ ...s, grupo: g.t }))
     ))}
   </div>
   <figcaption class="smap__info" data-info aria-live="polite">
-    <p class="smap__hint">Tocá un servicio para ver qué es. Si elegís una situación o usás el asistente, se iluminan los recomendados.</p>
+    <p class="smap__hint">Tocá un servicio para ver qué es. Si elegís una situación, se iluminan los recomendados.</p>
   </figcaption>
 </figure>
 

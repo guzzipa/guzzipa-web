@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
 import { totalServicios } from '../data/servicios';
 import ServicePicker from '../components/ServicePicker.astro';
-import Recomendador from '../components/Recomendador.astro';
 
 const title = 'Pablo Guzzi';
 const description =
@@ -213,11 +212,10 @@ const schema = {
           </div>
           <p class="intro">
             {totalServicios} servicios para decidir, construir, liderar, acompañar y formar. Para no marearte,
-            contame tu problema, por escrito o en audio, y te digo por dónde arrancar.
+            empezá por tu situación y te muestro por dónde arrancar.
           </p>
         </div>
-        <Recomendador id="home-rec" />
-        <ServicePicker id="home-pick" label="O elegí la frase que más se parece a tu situación" />
+        <ServicePicker id="home-pick" />
       </div>
     </section>
 
