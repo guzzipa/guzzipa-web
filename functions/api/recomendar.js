@@ -9,6 +9,8 @@ const MAX_AUDIO_B64 = 2_800_000; // ~45 s de WAV mono 16 kHz
 const VENTANA_MS = 10 * 60 * 1000;
 const MAX_POR_VENTANA = 12;
 const usos = new Map(); // límite simple por IP (por instancia)
+let ganador = null; // modelo + vía que respondió bien la última vez (por instancia)
+const TIMEOUT_MS = 20000;
 
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), {
@@ -64,22 +66,52 @@ const ESQUEMA = {
   required: ['resumen', 'fuera_de_tema', 'recomendaciones'],
 };
 
-async function llamarGemini(env, payload) {
+function intentos(env) {
   const key = env.GEMINI_API_KEY;
   const modelos = [env.GEMINI_MODEL, ...MODELOS].filter(Boolean);
-  let ultimo = '';
+  const lista = [];
   for (const m of modelos) {
-    const urls = [
-      { u: `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, h: { 'x-goog-api-key': key } },
-      { u: `https://aiplatform.googleapis.com/v1/publishers/google/models/${m}:generateContent?key=${encodeURIComponent(key)}`, h: {} },
-    ];
-    for (const { u, h } of urls) {
-      const r = await fetch(u, { method: 'POST', headers: { 'content-type': 'application/json', ...h }, body: JSON.stringify(payload) });
-      if (r.ok) return { ok: true, data: await r.json() };
-      const cuerpo = (await r.text()).slice(0, 400);
-      ultimo = `${m} ${new URL(u).host} ${r.status} ${cuerpo}`;
-      if (r.status === 429) return { ok: false, limite: true, error: ultimo };
+    const ai = { m, via: 'aistudio', u: `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, h: { 'x-goog-api-key': key } };
+    const vx = { m, via: 'vertex', u: `https://aiplatform.googleapis.com/v1/publishers/google/models/${m}:generateContent?key=${encodeURIComponent(key)}`, h: {} };
+    // Las claves "AQ." suelen ser de Vertex AI (modo express): probar esa vía primero.
+    if (key.startsWith('AQ.')) lista.push(vx, ai); else lista.push(ai, vx);
+  }
+  if (ganador) lista.sort((x, y) => (x.m + x.via === ganador ? -1 : y.m + y.via === ganador ? 1 : 0));
+  return lista;
+}
+
+function cuerpo(payload, modelo) {
+  // Sin razonamiento extendido en 2.5: responde mucho más rápido y no gasta tokens pensando.
+  if (!/2\.5/.test(modelo)) return payload;
+  return { ...payload, generationConfig: { ...payload.generationConfig, thinkingConfig: { thinkingBudget: 0 } } };
+}
+
+async function llamarGemini(env, payload) {
+  let ultimo = '';
+  const inicio = Date.now();
+  for (const it of intentos(env)) {
+    if (Date.now() - inicio > 40000) break;
+    let r;
+    try {
+      r = await fetch(it.u, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', ...it.h },
+        body: JSON.stringify(cuerpo(payload, it.m)),
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
+    } catch (e) {
+      ultimo = `${it.m} ${it.via} timeout/red ${e && e.name}`;
+      console.error('gemini', ultimo);
+      continue;
     }
+    if (r.ok) {
+      ganador = it.m + it.via;
+      console.log('gemini ok', it.m, it.via, Date.now() - inicio, 'ms');
+      return { ok: true, data: await r.json() };
+    }
+    ultimo = `${it.m} ${it.via} ${r.status} ${(await r.text()).slice(0, 300)}`;
+    console.error('gemini', ultimo);
+    if (r.status === 429) return { ok: false, limite: true, error: ultimo };
   }
   return { ok: false, error: ultimo };
 }

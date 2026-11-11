@@ -113,7 +113,9 @@ const contactHref = SITE.formUrl || '/#contacto';
         busy = true; send.disabled = true; root.classList.add('is-busy');
         setStatus('Pensando la mejor recomendación…'); out.hidden = true;
         try {
-          var r = await fetch('/api/recomendar', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text: text, audio: audioB64 || undefined }) });
+          var slow = setTimeout(function () { setStatus('Sigo pensando, dame unos segundos más…'); }, 8000);
+          var r = await fetch('/api/recomendar', { signal: AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined, method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text: text, audio: audioB64 || undefined }) });
+          clearTimeout(slow);
           var d = await r.json().catch(function () { return {}; });
           if (!r.ok) throw new Error(d.error || 'No pude procesar tu consulta. Probá de nuevo o escribime directamente.');
           var html = '';
@@ -132,7 +134,7 @@ const contactHref = SITE.formUrl || '/#contacto';
           out.innerHTML = html; out.hidden = false; setStatus('');
           audioB64 = ''; micLabel.textContent = 'Grabar audio';
         } catch (err) {
-          setStatus(err.message);
+          setStatus(err && err.name === 'TimeoutError' ? 'Tardó demasiado. Probá de nuevo en un momento.' : err.message);
         } finally {
           busy = false; send.disabled = false; root.classList.remove('is-busy');
         }
