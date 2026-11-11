@@ -1,0 +1,142 @@
+---
+// Asistente: la persona escribe o graba su problema y recibe 1 a 3 servicios recomendados.
+// Habla con /api/recomendar (Cloudflare Pages Function). No guarda nada.
+import { SITE } from '../config';
+interface Props { id?: string }
+const { id = 'rec' } = Astro.props;
+const contactHref = SITE.formUrl || '/#contacto';
+---
+<div class="rec" data-rec data-contact={contactHref}>
+  <div class="rec__head">
+    <span class="rec__badge"><span class="dot" aria-hidden="true"></span>Asistente con IA</span>
+    <label class="rec__label" for={`${id}-q`}>Contame qué te pasa y te digo por dónde empezar</label>
+  </div>
+  <form class="rec__form" novalidate>
+    <textarea
+      id={`${id}-q`}
+      name="q"
+      rows="3"
+      maxlength="2000"
+      placeholder="Por ejemplo: cada área de mi empresa usa ChatGPT por su cuenta y no sabemos cuánto gastamos ni qué datos salen."
+    ></textarea>
+    <div class="rec__bar">
+      <button type="button" class="rec__mic" data-mic aria-pressed="false">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z" fill="currentColor"/></svg>
+        <span data-mic-label>Grabar audio</span>
+      </button>
+      <span class="rec__status" data-status aria-live="polite"></span>
+      <button type="submit" class="btn btn--glow rec__send" data-send>Recomendame</button>
+    </div>
+  </form>
+  <div class="rec__out" data-out hidden aria-live="polite"></div>
+  <p class="rec__note">Responde una IA (Gemini) y puede equivocarse. No guardamos lo que escribís ni tu audio.</p>
+</div>
+
+<script is:inline>
+  (function () {
+    var MAX_SEG = 45;
+    function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+    // Convierte lo grabado a WAV mono 16 kHz (formato que Gemini acepta en cualquier navegador).
+    async function aWav(blob) {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      var ctx = new Ctx();
+      var buf = await new Promise(function (ok, ko) { blob.arrayBuffer().then(function (ab) { ctx.decodeAudioData(ab, ok, ko); }); });
+      ctx.close && ctx.close();
+      var rate = 16000, len = Math.ceil(Math.min(buf.duration, MAX_SEG) * rate);
+      var off = new OfflineAudioContext(1, len, rate);
+      var src = off.createBufferSource(); src.buffer = buf; src.connect(off.destination); src.start();
+      var out = await off.startRendering();
+      var pcm = out.getChannelData(0), n = pcm.length;
+      var ab = new ArrayBuffer(44 + n * 2), v = new DataView(ab);
+      function w(o, s) { for (var i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); }
+      w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt ');
+      v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+      v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+      w(36, 'data'); v.setUint32(40, n * 2, true);
+      for (var i = 0; i < n; i++) { var x = Math.max(-1, Math.min(1, pcm[i])); v.setInt16(44 + i * 2, x < 0 ? x * 0x8000 : x * 0x7fff, true); }
+      var bytes = new Uint8Array(ab), bin = '';
+      for (var j = 0; j < bytes.length; j += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(j, j + 0x8000));
+      return btoa(bin);
+    }
+
+    document.querySelectorAll('[data-rec]').forEach(function (root) {
+      if (root.dataset.ready) return; root.dataset.ready = '1';
+      var form = root.querySelector('form'), ta = root.querySelector('textarea');
+      var mic = root.querySelector('[data-mic]'), micLabel = root.querySelector('[data-mic-label]');
+      var status = root.querySelector('[data-status]'), out = root.querySelector('[data-out]');
+      var send = root.querySelector('[data-send]'), contact = root.getAttribute('data-contact');
+      var rec = null, chunks = [], audioB64 = '', timer = null, t0 = 0, busy = false;
+
+      if (!(navigator.mediaDevices && window.MediaRecorder)) mic.hidden = true;
+
+      function setStatus(s) { status.textContent = s || ''; }
+      function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+
+      mic.addEventListener('click', async function () {
+        if (busy) return;
+        if (rec && rec.state === 'recording') { stopRec(); return; }
+        try {
+          var stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          chunks = []; audioB64 = '';
+          rec = new MediaRecorder(stream);
+          rec.ondataavailable = function (e) { if (e.data.size) chunks.push(e.data); };
+          rec.onstop = async function () {
+            clearInterval(timer);
+            stream.getTracks().forEach(function (t) { t.stop(); });
+            mic.setAttribute('aria-pressed', 'false'); root.classList.remove('is-rec');
+            micLabel.textContent = 'Grabar de nuevo';
+            setStatus('Procesando audio…');
+            try {
+              audioB64 = await aWav(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }));
+              setStatus('Audio listo. Tocá "Recomendame".');
+            } catch (e) { audioB64 = ''; setStatus('No pude leer el audio. Probá escribiendo.'); }
+          };
+          rec.start();
+          t0 = Date.now(); root.classList.add('is-rec'); mic.setAttribute('aria-pressed', 'true');
+          micLabel.textContent = 'Detener';
+          setStatus('Grabando… 0 s');
+          timer = setInterval(function () {
+            var s = Math.floor((Date.now() - t0) / 1000);
+            setStatus('Grabando… ' + s + ' s de ' + MAX_SEG);
+            if (s >= MAX_SEG) stopRec();
+          }, 250);
+        } catch (e) { setStatus('No tengo acceso al micrófono. Podés escribir tu consulta.'); }
+      });
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (busy) return;
+        if (rec && rec.state === 'recording') { setStatus('Primero detené la grabación.'); return; }
+        var text = ta.value.trim();
+        if (!text && !audioB64) { setStatus('Escribí o grabá tu consulta.'); ta.focus(); return; }
+        busy = true; send.disabled = true; root.classList.add('is-busy');
+        setStatus('Pensando la mejor recomendación…'); out.hidden = true;
+        try {
+          var r = await fetch('/api/recomendar', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text: text, audio: audioB64 || undefined }) });
+          var d = await r.json().catch(function () { return {}; });
+          if (!r.ok) throw new Error(d.error || 'No pude procesar tu consulta. Probá de nuevo o escribime directamente.');
+          var html = '';
+          if (d.transcripcion) html += '<p class="rec__heard"><span>Entendí:</span> “' + esc(d.transcripcion) + '”</p>';
+          html += '<p class="rec__sum">' + esc(d.resumen) + '</p>';
+          if (!d.fuera_de_tema && d.recomendaciones.length) {
+            html += '<ol class="pick__recs">' + d.recomendaciones.map(function (s) {
+              return '<li><a href="' + esc(s.href) + '"' + (s.href === '/ai-implementation' ? ' class="is-feature"' : '') + ' data-cta="rec-' + esc(s.n) + '">' +
+                '<span class="pick__n">' + esc(s.n) + '</span><span class="pick__g">' + esc(s.grupo) + '</span>' +
+                '<strong>' + esc(s.t) + '</strong><span class="pick__sd">' + esc(s.por_que) + '</span>' +
+                '<span class="pick__go">Ver servicio <span aria-hidden="true">→</span></span></a></li>';
+            }).join('') + '</ol>';
+            document.dispatchEvent(new CustomEvent('svc:highlight', { detail: d.recomendaciones.map(function (s) { return s.n; }) }));
+          }
+          html += '<p class="rec__cta"><a class="btn btn--sm" href="' + esc(contact) + '" target="_blank" rel="noopener" data-cta="rec-contacto">Hablemos sobre esto</a></p>';
+          out.innerHTML = html; out.hidden = false; setStatus('');
+          audioB64 = ''; micLabel.textContent = 'Grabar audio';
+        } catch (err) {
+          setStatus(err.message);
+        } finally {
+          busy = false; send.disabled = false; root.classList.remove('is-busy');
+        }
+      });
+    });
+  })();
+</script>

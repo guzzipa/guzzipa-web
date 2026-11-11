@@ -1,0 +1,68 @@
+---
+// Mapa de servicios: filas = dónde operan en la empresa, columnas = en qué momento.
+// Se ilumina con el selector por situación y con el asistente (evento 'svc:highlight').
+import { catalogo, ejesDonde, ejesCuando } from '../data/servicios';
+const items = catalogo.flatMap((g) => g.items.map((s) => ({ ...s, grupo: g.t })));
+---
+<figure class="smap" data-smap aria-label="Mapa de servicios según dónde operan en la empresa y en qué momento">
+  <div class="smap__grid">
+    <div class="smap__corner" aria-hidden="true"></div>
+    {ejesCuando.map((c, i) => (
+      <div class={`smap__col${i < ejesCuando.length - 1 ? ' has-next' : ''}`}>
+        <span class="smap__step">{String(i + 1).padStart(2, '0')}</span>
+        <strong>{c.t}</strong>
+        <span>{c.d}</span>
+      </div>
+    ))}
+    {ejesDonde.map((d) => (
+      <>
+        <div class="smap__row"><strong>{d.t}</strong><span>{d.d}</span></div>
+        {ejesCuando.map((c) => (
+          <div class={`smap__cell${items.some((s) => s.donde === d.id && s.cuando === c.id) ? '' : ' is-empty'}`} data-col={c.t}>
+            {items.filter((s) => s.donde === d.id && s.cuando === c.id).map((s) => (
+              <button
+                type="button"
+                class={`smap__chip${s.href === '/ai-implementation' ? ' is-feature' : ''}`}
+                data-n={s.n}
+                data-t={s.t}
+                data-d={s.d}
+                data-g={s.grupo}
+                data-href={s.href ?? `/servicios#s${s.n}`}
+                data-cta={s.cta ?? 'Ver detalle'}
+              >
+                <span>{s.n}</span>{s.c}
+              </button>
+            ))}
+          </div>
+        ))}
+      </>
+    ))}
+  </div>
+  <figcaption class="smap__info" data-info aria-live="polite">
+    <p class="smap__hint">Tocá un servicio para ver qué es. Si elegís una situación o usás el asistente, se iluminan los recomendados.</p>
+  </figcaption>
+</figure>
+
+<script is:inline>
+  (function () {
+    document.querySelectorAll('[data-smap]').forEach(function (map) {
+      if (map.dataset.ready) return; map.dataset.ready = '1';
+      var chips = map.querySelectorAll('.smap__chip'), info = map.querySelector('[data-info]');
+      var hint = info.innerHTML;
+      function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+      function select(chip) {
+        chips.forEach(function (c) { c.classList.toggle('is-on', c === chip); c.setAttribute('aria-pressed', String(c === chip)); });
+        if (!chip) { info.innerHTML = hint; return; }
+        info.innerHTML = '<p class="smap__k">' + esc(chip.dataset.n) + ' · ' + esc(chip.dataset.g) + '</p>' +
+          '<p class="smap__t">' + esc(chip.dataset.t) + '</p><p class="smap__d">' + esc(chip.dataset.d) + '</p>' +
+          '<a class="more" href="' + esc(chip.dataset.href) + '">' + esc(chip.dataset.cta) + ' <span aria-hidden="true">→</span></a>';
+      }
+      chips.forEach(function (c) { c.addEventListener('click', function () { select(c.classList.contains('is-on') ? null : c); }); });
+      document.addEventListener('svc:highlight', function (e) {
+        var set = e.detail || [];
+        map.classList.toggle('has-hl', set.length > 0);
+        chips.forEach(function (c) { c.classList.toggle('is-hl', set.indexOf(c.dataset.n) !== -1); });
+      });
+    });
+  })();
+</script>

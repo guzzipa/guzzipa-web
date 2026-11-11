@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
 import { catalogo, totalServicios } from '../data/servicios';
 import ServicePicker from '../components/ServicePicker.astro';
+import Recomendador from '../components/Recomendador.astro';
+import ServiceMap from '../components/ServiceMap.astro';
 
 const title = 'Servicios · Pablo Guzzi';
 const description =
@@ -34,6 +36,7 @@ const schema = {
       <nav aria-label="Grupos de servicios">
         <ul class="nav__links">
           <li><a href="#top">Por situación</a></li>
+          <li><a href="#mapa">Mapa</a></li>
           <li><a href="#catalogo">Catálogo completo</a></li>
         </ul>
       </nav>
@@ -48,10 +51,27 @@ const schema = {
         <p class="eyebrow">Servicios</p>
         <h1 class="h1--name">Empezá por <span class="hl">tu situación.</span></h1>
         <p class="lede">
-          Tengo {totalServicios} servicios para llevar los datos y la IA de la estrategia a la operación. Elegí lo
-          que más se parece a lo que te pasa y te muestro por dónde arrancar. Abajo está el catálogo completo.
+          Tengo {totalServicios} servicios para llevar los datos y la IA de la estrategia a la operación. Contame qué
+          te pasa, por escrito o en audio, y te muestro por dónde arrancar. Abajo está el catálogo completo.
         </p>
-        <ServicePicker id="svc-pick" full />
+        <Recomendador id="svc-rec" />
+        <ServicePicker id="svc-pick" full label="O elegí la frase que más se parece a tu situación" />
+      </div>
+    </section>
+
+    <section class="section" id="mapa" aria-labelledby="mapa-t">
+      <div class="wrap">
+        <div class="split">
+          <div>
+            <p class="eyebrow">Mapa de servicios</p>
+            <h2 id="mapa-t">Dónde opera cada servicio <span class="hl">en tu empresa.</span></h2>
+          </div>
+          <p class="intro">
+            De arriba hacia abajo, de la dirección a la operación. De izquierda a derecha, de decidir a
+            sostener. Así ves qué parte de tu empresa toca cada servicio y en qué momento.
+          </p>
+        </div>
+        <ServiceMap />
       </div>
     </section>
 

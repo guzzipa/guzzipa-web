@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
 import { totalServicios } from '../data/servicios';
 import ServicePicker from '../components/ServicePicker.astro';
+import Recomendador from '../components/Recomendador.astro';
 
 const title = 'Pablo Guzzi';
 const description =
@@ -25,7 +26,7 @@ const formacion = [
 
 const docencia = [
   { y: '2021 – hoy', org: 'Coderhouse', t: 'Director de la carrera de Data Science & Analytics' },
-  { y: '2022 – hoy', org: 'UdeSA · Austral · Di Tella', t: 'Profesor invitado en programas ejecutivos' },
+  { y: '2022 – hoy', org: 'San Andrés · Austral · UCA · Di Tella', t: 'Profesor invitado en programas ejecutivos' },
   { y: '2012 – 2025', org: 'UNTREF', t: 'Profesor de Data Mining y Muestreo' },
 ];
 
@@ -70,8 +71,8 @@ const podcasts = [
 const stats = [
   { n: '15+', t: 'años liderando datos e IA' },
   { n: '36.000+', t: 'seguidores en LinkedIn' },
-  { n: '10', t: 'entrevistas y podcasts' },
-  { n: '2012', t: 'desde que doy clases' },
+  { n: '100+', t: 'charlas, eventos y podcasts como speaker' },
+  { n: '15+', t: 'años como docente' },
 ];
 
 const escenarios = ['AI Weekend Buenos Aires', 'CDO LATAM Summit', 'Congreso CDO LATAM · Bogotá', 'CMS Fin & Pay Latam Forum', 'AIFI-25', 'Seminarium Summit Data & AI', 'FAMAF', 'Coderhouse TalentWeek', 'Growth Rockstar', 'IA sin Humo', 'teramot', 'TalentCross'];
@@ -212,10 +213,11 @@ const schema = {
           </div>
           <p class="intro">
             {totalServicios} servicios para decidir, construir, liderar, acompañar y formar. Para no marearte,
-            empezá por tu situación y te muestro por dónde arrancar.
+            contame tu problema, por escrito o en audio, y te digo por dónde arrancar.
           </p>
         </div>
-        <ServicePicker id="home-pick" />
+        <Recomendador id="home-rec" />
+        <ServicePicker id="home-pick" label="O elegí la frase que más se parece a tu situación" />
       </div>
     </section>
 
@@ -405,7 +407,7 @@ const schema = {
             <h2 id="doc-t">Enseñar es parte de <span class="hl">cómo trabajo.</span></h2>
           </div>
           <p class="intro">
-            Desde 2012 doy clases de datos e IA, de la universidad a programas ejecutivos. Si querés que dé
+            Hace más de 15 años que doy clases de datos e IA, de la universidad a programas ejecutivos. Si querés que dé
             una charla o un taller para tu equipo, escribime.
           </p>
         </div>
