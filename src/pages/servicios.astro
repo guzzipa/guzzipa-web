@@ -26,7 +26,7 @@ const schema = {
   ),
 };
 ---
-<Base title={title} description={description} schema={schema}>
+<Base title={title} description={description} schema={schema} theme="light">
   <a class="skip" href="#contenido">Saltar al contenido</a>
 
   <header class="nav">
@@ -85,12 +85,12 @@ const schema = {
         <div class="cat__filters" role="group" aria-label="Filtrar por grupo">
           <button type="button" data-f="all" aria-pressed="true">Todos <span>{totalServicios}</span></button>
           {catalogo.map((g) => (
-            <button type="button" data-f={g.id} aria-pressed="false">{g.t} <span>{g.items.length}</span></button>
+            <button type="button" class={`g-${g.id}`} data-f={g.id} aria-pressed="false">{g.t} <span>{g.items.length}</span></button>
           ))}
         </div>
         <div class="cat">
           {catalogo.map((g) => (
-            <div class="cat__group" data-g={g.id} id={g.id}>
+            <div class={`cat__group g-${g.id}`} data-g={g.id} id={g.id}>
               <p class="cat__gt"><span class="kicker">{g.k}</span> {g.t}<span class="cat__gd">{g.d}</span></p>
               {g.items.map((s) => (
                 <details class={`cat__item${s.href === '/ai-implementation' ? ' is-feature' : ''}`} id={`s${s.n}`}>
@@ -137,7 +137,7 @@ const schema = {
       </div>
     </section>
 
-    <section class="final grid-bg" id="contacto" aria-labelledby="final-t">
+    <section class="final grid-bg band" id="contacto" aria-labelledby="final-t">
       <div class="glow glow--final" aria-hidden="true"></div>
       <div class="wrap final__in">
         <p class="eyebrow">Contacto</p>

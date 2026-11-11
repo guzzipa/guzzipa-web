@@ -1,6 +1,7 @@
 ---
 import { SITE } from '../config';
 import '../styles/global.css';
+import '../styles/light.css';
 
 interface Props {
   title: string;
@@ -8,8 +9,9 @@ interface Props {
   ogImage?: string; // ruta dentro de public/, por ejemplo '/og-ai.png'
   siteName?: string;
   schema?: Record<string, unknown>;
+  theme?: 'light' | 'dark';
 }
-const { title, description, ogImage: ogPath = '/og.png', siteName = SITE.person, schema } = Astro.props;
+const { title, description, ogImage: ogPath = '/og.png', siteName = SITE.person, schema, theme = 'dark' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE.url).toString();
 const ogImage = new URL(ogPath, SITE.url).toString();
 ---
@@ -22,8 +24,8 @@ const ogImage = new URL(ogPath, SITE.url).toString();
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="author" content={SITE.fullName} />
-    <meta name="theme-color" content="#07090a" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content={theme === 'light' ? '#faf8f4' : '#07090a'} />
+    <meta name="color-scheme" content={theme} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <!-- Compartir el enlace (LinkedIn, WhatsApp, X) -->
@@ -58,7 +60,7 @@ const ogImage = new URL(ogPath, SITE.url).toString();
       </>
     )}
   </head>
-  <body>
+  <body class={theme === 'light' ? 'theme-light' : undefined}>
     <slot />
     <script is:inline>
       // Evento de analytics cuando alguien toca un botón de contacto.

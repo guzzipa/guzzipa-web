@@ -298,7 +298,7 @@ export const situaciones = [
   },
 ];
 
-const porNombre = new Map(catalogo.flatMap((g) => g.items.map((s) => [s.t, { ...s, grupo: g.t }] as const)));
+const porNombre = new Map(catalogo.flatMap((g) => g.items.map((s) => [s.t, { ...s, grupo: g.t, gid: g.id }] as const)));
 export const situacionesResueltas = situaciones.map((x) => ({
   ...x,
   items: x.s.map((t) => {

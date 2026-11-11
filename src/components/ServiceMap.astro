@@ -2,7 +2,7 @@
 // Mapa de servicios: filas = dónde operan en la empresa, columnas = en qué momento.
 // Se ilumina con el selector por situación (evento 'svc:highlight').
 import { catalogo, ejesDonde, ejesCuando } from '../data/servicios';
-const items = catalogo.flatMap((g) => g.items.map((s) => ({ ...s, grupo: g.t })));
+const items = catalogo.flatMap((g) => g.items.map((s) => ({ ...s, grupo: g.t, gid: g.id })));
 ---
 <figure class="smap" data-smap aria-label="Mapa de servicios según dónde operan en la empresa y en qué momento">
   <div class="smap__grid">
@@ -22,7 +22,7 @@ const items = catalogo.flatMap((g) => g.items.map((s) => ({ ...s, grupo: g.t }))
             {items.filter((s) => s.donde === d.id && s.cuando === c.id).map((s) => (
               <button
                 type="button"
-                class={`smap__chip${s.href === '/ai-implementation' ? ' is-feature' : ''}`}
+                class={`smap__chip g-${s.gid}${s.href === '/ai-implementation' ? ' is-feature' : ''}`}
                 data-n={s.n}
                 data-t={s.t}
                 data-d={s.d}

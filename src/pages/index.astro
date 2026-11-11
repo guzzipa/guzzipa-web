@@ -126,7 +126,7 @@ const schema = {
   sameAs: [SITE.linkedinUrl, SITE.youtubeUrl].filter(Boolean),
 };
 ---
-<Base title={title} description={description} schema={schema}>
+<Base title={title} description={description} schema={schema} theme="light">
   <a class="skip" href="#contenido">Saltar al contenido</a>
 
   <header class="nav">
@@ -188,7 +188,7 @@ const schema = {
     </section>
 
     <!-- NÚMEROS Y ESCENARIOS -->
-    <section class="proof" aria-label="Trayectoria en números">
+    <section class="proof band" aria-label="Trayectoria en números">
       <div class="wrap">
         <ul class="stats">
           {stats.map((s) => (
@@ -256,7 +256,7 @@ const schema = {
     </section>
 
     <!-- RECOMENDACIONES -->
-    <section class="section section--panel" id="recomendaciones" aria-labelledby="recs-t">
+    <section class="section section--panel band" id="recomendaciones" aria-labelledby="recs-t">
       <div class="wrap">
         <div class="split">
           <div>
@@ -459,7 +459,7 @@ const schema = {
     </section>
 
     <!-- CONTACTO -->
-    <section class="final grid-bg" id="contacto" aria-labelledby="final-t">
+    <section class="final grid-bg band" id="contacto" aria-labelledby="final-t">
       <div class="glow glow--final" aria-hidden="true"></div>
       <div class="wrap final__in">
         <p class="eyebrow">Contacto</p>

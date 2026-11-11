@@ -19,7 +19,7 @@ const contactHref = SITE.formUrl || '/#contacto';
       <p class="pick__d">{x.d}</p>
       <ol class="pick__recs">
         {x.items.map((s) => (
-          <li>
+          <li class={`g-${s.gid}`}>
             <a href={s.href ?? `/servicios#s${s.n}`} class={s.href === '/ai-implementation' ? 'is-feature' : undefined} data-cta={`pick-${s.n}`}>
               <span class="pick__n">{s.n}</span>
               <span class="pick__g">{s.grupo}</span>
